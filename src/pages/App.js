@@ -1,10 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import InstagramIcon from "./InstagramIcon";
-import TiktokIcon from "./TiktokIcon";
-import FacebookIcon from "./FacebookIcon";
-import Modal from "./modal";
+import InstagramIcon from "../icon/InstagramIcon";
+import TiktokIcon from "../icon/TiktokIcon";
+import FacebookIcon from "../icon/FacebookIcon";
+import Modal from "../modal/modal";
 import "./App.css";
 
 const supabase = createClient(
