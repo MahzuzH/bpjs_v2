@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
+import { Modal, Button, Spinner, Fade } from "react-bootstrap";
+import { FiEdit, FiTrash2, FiPlus, FiCheck } from "react-icons/fi";
 import Sidebar from "../../../components/backend/Sidebar";
 import Navbar from "../../../components/backend/Navbar";
 import Footer from "../../../components/backend/Footer";
-import { FiEdit, FiTrash2, FiPlus } from "react-icons/fi";
-import { Modal } from "react-bootstrap";
 
 function Profiles() {
     const [profiles, setProfiles] = useState([]);
-    const [showSuccessAnimation, setShowSuccessAnimation] = useState(false); // State for animation
+    const [deleteId, setDeleteId] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [complete, setComplete] = useState(false);
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
         process.env.REACT_APP_SUPABASE_PROJ_KEY
@@ -33,31 +35,53 @@ function Profiles() {
         navigate("/profiles/create");
     };
 
-    const handleConfirmCreate = async () => {
-        // Perform confirmation operation, e.g., add data to Supabase
-        // ...
-
-        // Set state to show success animation
-        setShowSuccessAnimation(true);
-
-        // After the operation is complete, navigate to the Profiles page
-        setTimeout(() => {
-            setShowSuccessAnimation(false);
-            navigate("/profiles");
-        }, 2000); // Display the animation for 2 seconds
-    };
-
     const handleDelete = async (id) => {
-        const { error } = await supabase.from("profiles").delete().eq("id", id);
-        if (error) {
-            console.error("Error deleting data:", error.message);
-        } else {
-            fetchData();
+        try {
+            const { error } = await supabase
+                .from("profiles")
+                .delete()
+                .eq("id", id);
+            if (error) {
+                console.error("Error deleting data:", error.message);
+                // Optionally, provide user feedback or take appropriate action
+            } else {
+                fetchData();
+            }
+        } catch (error) {
+            console.error("Unhandled error:", error.message);
+            // Optionally, provide user feedback or take appropriate action
         }
     };
 
     const handleEdit = (id) => {
         console.log(`Edit item with ID ${id}`);
+    };
+
+    const handleShowDeleteModal = (id) => {
+        setDeleteId(id);
+        setShowDeleteModal(true);
+        setComplete(false);
+    };
+
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+        setDeleteId(null);
+    };
+    const handleConfirmDelete = async () => {
+        const { error } = await supabase
+            .from("profiles")
+            .delete()
+            .eq("id", deleteId);
+        if (error) {
+            console.error("Error deleting data:", error.message);
+        } else {
+            setComplete(true);
+            setTimeout(() => {
+                setShowDeleteModal(false);
+                setDeleteId(null);
+                fetchData();
+            }, 2000);
+        }
     };
 
     useEffect(() => {
@@ -241,7 +265,7 @@ function Profiles() {
                                                                 <button
                                                                     className="btn btn-danger btn-sm"
                                                                     onClick={() =>
-                                                                        handleDelete(
+                                                                        handleShowDeleteModal(
                                                                             item.id
                                                                         )
                                                                     }
@@ -277,12 +301,64 @@ function Profiles() {
                                     </div>
                                 </div>
                             </div>
-
                             <Footer />
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* Modal Konfirmasi Hapus Data */}
+            <Modal
+                show={showDeleteModal}
+                onHide={handleCloseDeleteModal}
+                component={Fade}
+                backdrop={true}
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Konfirmasi Hapus Data</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="text-center">
+                        <div className="checklist-icon mx-auto">
+                            {complete && <FiCheck size={40} color="green" />}
+                        </div>
+                        {loading ? (
+                            <div className="flex items-center justify-center">
+                                <Spinner
+                                    animation="border"
+                                    role="status"
+                                    variant="primary"
+                                    className="mx-auto"
+                                >
+                                    <span className="sr-only">Loading...</span>
+                                </Spinner>
+                                <p className="mt-2">Deleting...</p>
+                            </div>
+                        ) : complete ? (
+                            <p className="mt-2">Data berhasil dihapus!</p>
+                        ) : (
+                            "Apakah anda yakin untuk menghapus data?"
+                        )}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        onClick={handleCloseDeleteModal}
+                        className="btn bg-danger btn-secondary font-semibold text-white"
+                    >
+                        Batal
+                    </Button>
+                    <Button
+                        variant="danger"
+                        onClick={handleConfirmDelete}
+                        className="btn bg-primary font-semibold text-white "
+                    >
+                        {complete ? "Close" : "Confirm"}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
