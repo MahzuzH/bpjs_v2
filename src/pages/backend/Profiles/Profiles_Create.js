@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { FiCheck } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,16 @@ function Profiles_Create() {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (complete) {
+            const timeoutId = setTimeout(() => {
+                setComplete(false);
+            }, 2000);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [complete]);
+
     const handleCreate = () => {
         if (!name || !title || !avatar) {
             alert("Please fill in all fields");
@@ -29,33 +39,29 @@ function Profiles_Create() {
         }
 
         setShowModal(true);
-    };
-
-    const handleConfirmCreate = async () => {
         setLoading(true);
 
-        try {
-            const { data, error } = await supabase
-                .from("profiles")
-                .insert([{ name, title, avatar }]);
+        supabase
+            .from("profiles")
+            .insert([{ name, title, avatar }])
+            .then(({ data, error }) => {
+                if (error) {
+                    console.error("Error creating data:", error.message);
+                    alert("Error creating data");
+                } else {
+                    setComplete(true);
+                    setLoading(false);
 
-            if (error) {
+                    setTimeout(() => {
+                        setShowModal(false);
+                        navigate("/profiles");
+                    }, 2000);
+                }
+            })
+            .catch((error) => {
                 console.error("Error creating data:", error.message);
                 alert("Error creating data");
-            } else {
-                setComplete(true);
-
-                setTimeout(() => {
-                    setShowModal(false);
-                    setLoading(false);
-                    setComplete(false);
-                    navigate("/profiles");
-                }, 2000);
-            }
-        } catch (error) {
-            console.error("Error creating data:", error.message);
-            alert("Error creating data");
-        }
+            });
     };
 
     const handleCloseModal = () => {
@@ -132,30 +138,49 @@ function Profiles_Create() {
                         <Modal.Title>Tambah Data Profiles</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {loading ? (
-                            <div className="text-center">
-                                <Spinner
-                                    animation="grow"
-                                    role="status"
-                                    variant="primary"
-                                    style={{
-                                        width: "4rem",
-                                        height: "4rem",
-                                        margin: "auto",
-                                    }}
-                                >
-                                    <span className="sr-only">Loading...</span>
-                                </Spinner>
-                                <p className="mt-2">Creating...</p>
-                            </div>
-                        ) : complete ? (
-                            <div className="text-center">
-                                <FiCheck size={40} color="green" />
-                                <p className="mt-2">Data added successfully!</p>
-                            </div>
-                        ) : (
-                            "Apakah anda yakin untuk menambahkan data?"
-                        )}
+                        <div className="text-center">
+                            {complete ? (
+                                <div className="checklist-icon mx-auto text-center">
+                                    <p
+                                        style={{
+                                            fontSize: "40px",
+                                            color: "green",
+                                            marginBottom: "10px",
+                                        }}
+                                    >
+                                        ✅
+                                    </p>
+                                    <p className="mt-2">
+                                        {/* <FiCheck size={40} color="green" /> */}
+                                        Data berhasil ditambahkan!
+                                    </p>
+                                </div>
+                            ) : loading ? (
+                                <div className="text-center">
+                                    <Spinner
+                                        animation="grow"
+                                        role="status"
+                                        variant="primary"
+                                        style={{
+                                            width: "4rem",
+                                            height: "4rem",
+                                            margin: "auto",
+                                        }}
+                                    >
+                                        <span className="sr-only">
+                                            Memuat...
+                                        </span>
+                                    </Spinner>
+                                    <p className="mt-2">
+                                        Sedang menambahkan...
+                                    </p>
+                                </div>
+                            ) : (
+                                <p className="mt-2">
+                                    Apa anda yakin akan menambahkan data?
+                                </p>
+                            )}
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
@@ -167,7 +192,7 @@ function Profiles_Create() {
                         </Button>
                         <Button
                             variant="primary"
-                            onClick={handleConfirmCreate}
+                            onClick={handleCreate}
                             className="btn bg-primary font-semibold text-white "
                         >
                             {complete ? "Close" : "Confirm"}

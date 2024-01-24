@@ -5,7 +5,7 @@ import { supabase } from "./Supabase"; //
 import Sidebar from "../../../components/backend/Sidebar";
 import Navbar from "../../../components/backend/Navbar";
 import Footer from "../../../components/backend/Footer";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 
 function Profiles_Edit() {
     const { id } = useParams();
@@ -16,6 +16,8 @@ function Profiles_Edit() {
         avatar: "",
     });
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [complete, setComplete] = useState(false);
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -64,7 +66,7 @@ function Profiles_Edit() {
     };
 
     const confirmUpdate = async () => {
-        closeConfirmModal(); // Menutup modal konfirmasi
+        setLoading(true);
         try {
             const { error } = await supabase
                 .from("profiles")
@@ -78,10 +80,17 @@ function Profiles_Edit() {
             if (error) {
                 console.error("Error updating profile data:", error.message);
             } else {
-                navigate("/profiles");
+                setComplete(true);
+                setLoading(false);
+
+                setTimeout(() => {
+                    closeConfirmModal(); // Menutup modal konfirmasi
+                    navigate("/profiles");
+                }, 2000);
             }
         } catch (error) {
             console.error("Unhandled error:", error.message);
+            setLoading(false);
         }
     };
 
@@ -138,7 +147,7 @@ function Profiles_Edit() {
                                     type="submit"
                                     className="btn bg-primary font-semibold text-white"
                                 >
-                                    Save Changes
+                                    Simpan
                                 </button>
                             </form>
                         </div>
@@ -151,10 +160,45 @@ function Profiles_Edit() {
             {/* Modal Konfirmasi */}
             <Modal show={showConfirmModal} onHide={closeConfirmModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Update Profile Data</Modal.Title>
+                    <Modal.Title>Update Links Data</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Apakah Anda yakin ingin mengupdate data?</p>
+                    <div className="text-center">
+                        {complete ? (
+                            <div className="checklist-icon mx-auto text-center">
+                                <p
+                                    style={{
+                                        fontSize: "40px",
+                                        color: "green",
+                                        marginBottom: "10px",
+                                    }}
+                                >
+                                    ✅
+                                </p>
+                                <p className="mt-2">Data berhasil diupdate!</p>
+                            </div>
+                        ) : loading ? (
+                            <div className="text-center">
+                                <Spinner
+                                    animation="grow"
+                                    role="status"
+                                    variant="primary"
+                                    style={{
+                                        width: "4rem",
+                                        height: "4rem",
+                                        margin: "auto",
+                                    }}
+                                >
+                                    <span className="sr-only">Memuat...</span>
+                                </Spinner>
+                                <p className="mt-2">Sedang menyimpan...</p>
+                            </div>
+                        ) : (
+                            <p className="mt-2">
+                                Apakah Anda yakin ingin mengupdate data?
+                            </p>
+                        )}
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -162,14 +206,14 @@ function Profiles_Edit() {
                         onClick={closeConfirmModal}
                         className="btn bg-danger btn-secondary font-semibold text-white"
                     >
-                        Cancel
+                        Batal
                     </Button>
                     <Button
                         variant="primary"
                         onClick={confirmUpdate}
                         className="btn bg-primary font-semibold text-white"
                     >
-                        Confirm
+                        {complete ? "Tutup" : "Konfirmasi"}
                     </Button>
                 </Modal.Footer>
             </Modal>
