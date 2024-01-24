@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import Sidebar from "../../../components/backend/Sidebar";
 import Navbar from "../../../components/backend/Navbar";
 import Footer from "../../../components/backend/Footer";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiPlus } from "react-icons/fi";
+import { Modal } from "react-bootstrap";
 
 function Profiles() {
-    const [data, setData] = useState([]);
+    const [profiles, setProfiles] = useState([]);
+    const [showSuccessAnimation, setShowSuccessAnimation] = useState(false); // State for animation
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
         process.env.REACT_APP_SUPABASE_PROJ_KEY
@@ -17,8 +21,30 @@ function Profiles() {
         if (error) {
             console.error("Error fetching data:", error.message);
         } else {
-            setData(data);
+            setProfiles(data);
         }
+    };
+
+    const navigate = useNavigate();
+    const [isCreateMode, setCreateMode] = useState(false);
+
+    const handleCreate = () => {
+        setCreateMode(true);
+        navigate("/profiles/create");
+    };
+
+    const handleConfirmCreate = async () => {
+        // Perform confirmation operation, e.g., add data to Supabase
+        // ...
+
+        // Set state to show success animation
+        setShowSuccessAnimation(true);
+
+        // After the operation is complete, navigate to the Profiles page
+        setTimeout(() => {
+            setShowSuccessAnimation(false);
+            navigate("/profiles");
+        }, 2000); // Display the animation for 2 seconds
     };
 
     const handleDelete = async (id) => {
@@ -36,7 +62,8 @@ function Profiles() {
 
     useEffect(() => {
         fetchData();
-    }, []); // Fetch data sa
+    }, []);
+
     return (
         <div>
             <div id="wrapper">
@@ -51,6 +78,20 @@ function Profiles() {
                                     <h6 className="m-0 font-weight-bold text-primary">
                                         Profiles
                                     </h6>
+                                    {!isCreateMode && (
+                                        <button
+                                            className="btn btn-success btn-sm mt-2 d-flex align-items-center text-white font-weight-bold"
+                                            onClick={handleCreate}
+                                        >
+                                            <FiPlus
+                                                style={{
+                                                    marginRight: "5px",
+                                                    fontSize: "20px",
+                                                }}
+                                            />
+                                            Create Data
+                                        </button>
+                                    )}
                                 </div>
                                 <div className="card-body">
                                     <div className="table-responsive">
@@ -110,7 +151,7 @@ function Profiles() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {data.map((item) => (
+                                                {profiles.map((item) => (
                                                     <tr key={item.id}>
                                                         <td
                                                             style={{
