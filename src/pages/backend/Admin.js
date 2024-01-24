@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Admin.css";
 import Sidebar from "../../components/backend/Sidebar";
 import Navbar from "../../components/backend/Navbar";
@@ -7,6 +7,9 @@ import Profiles from "./Profiles/Profiles";
 import { NavLink, Routes, Route } from "react-router-dom";
 
 function Admin() {
+    useEffect(() => {
+        document.title = "Admin | Dashboard";
+    }, []);
     return (
         <body id="page-top">
             <div id="wrapper">

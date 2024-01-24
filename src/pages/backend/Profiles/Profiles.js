@@ -43,18 +43,16 @@ function Profiles() {
                 .eq("id", id);
             if (error) {
                 console.error("Error deleting data:", error.message);
-                // Optionally, provide user feedback or take appropriate action
             } else {
                 fetchData();
             }
         } catch (error) {
             console.error("Unhandled error:", error.message);
-            // Optionally, provide user feedback or take appropriate action
         }
     };
 
     const handleEdit = (id) => {
-        console.log(`Edit item with ID ${id}`);
+        navigate(`/profiles/edit/${id}`);
     };
 
     const handleShowDeleteModal = (id) => {
@@ -67,6 +65,7 @@ function Profiles() {
         setShowDeleteModal(false);
         setDeleteId(null);
     };
+
     const handleConfirmDelete = async () => {
         const { error } = await supabase
             .from("profiles")
@@ -86,6 +85,7 @@ function Profiles() {
 
     useEffect(() => {
         fetchData();
+        document.title = "Admin | Profile";
     }, []);
 
     return (
