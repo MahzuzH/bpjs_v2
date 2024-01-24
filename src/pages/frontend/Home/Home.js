@@ -105,7 +105,7 @@ function Home() {
                                             alt={link.title}
                                             src={link.image}
                                         />
-                                        <p className="flex justify-center items-center w-full font-poppins text-sm tracking-tighter -ml-1 md:text-lg md:-ml-10 md:tracking-normal lg:text-xl">
+                                        <p className="flex justify-center items-center w-full font-poppins text-sm tracking-tighter -ml-1 text-black md:text-lg md:-ml-10 md:tracking-normal lg:text-xl">
                                             {link.title}
                                         </p>
                                     </div>

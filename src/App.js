@@ -5,6 +5,9 @@ import Admin from "./pages/backend/Admin";
 import Profiles from "./pages/backend/Profiles/Profiles";
 import Profiles_Create from "./pages/backend/Profiles/Profiles_Create";
 import Profiles_Edit from "./pages/backend/Profiles/Profiles_Edit";
+import Links from "./pages/backend/Links/Links";
+import Links_Create from "./pages/backend/Links/Links_Create";
+import Links_Edit from "./pages/backend/Links/Links_Edit";
 import Socials from "./pages/backend/Socials/Socials";
 
 const App = () => {
@@ -21,7 +24,10 @@ const App = () => {
                 <Route path="/profiles/create" element={<Profiles_Create />} />
                 <Route path="/profiles/edit/:id" element={<Profiles_Edit />} />
 
-                <Route path="/links" element={<Admin />} />
+                <Route path="/links" element={<Links />} />
+                <Route path="/links/create" element={<Links_Create />} />
+                <Route path="/links/edit/:id" element={<Links_Edit />} />
+
                 <Route path="/socials" element={<Socials />} />
             </Routes>
         </Router>
