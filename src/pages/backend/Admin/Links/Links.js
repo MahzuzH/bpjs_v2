@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Modal, Button, Spinner, Fade } from "react-bootstrap";
 import { FiEdit, FiTrash2, FiPlus, FiCheck } from "react-icons/fi";
-import Sidebar from "../../../components/backend/Sidebar";
-import Navbar from "../../../components/backend/Navbar";
-import Footer from "../../../components/backend/Footer";
+import Sidebar from "../../../../components/backend/Sidebar";
+import Navbar from "../../../../components/backend/Navbar";
+import Footer from "../../../../components/backend/Footer";
 
-function Socials() {
-    const [socials, setSocials] = useState([]);
+function Links() {
+    const [links, setLinks] = useState([]);
     const [deleteId, setDeleteId] = useState(null);
     const [isCreateMode, setCreateMode] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -22,24 +22,25 @@ function Socials() {
 
     useEffect(() => {
         fetchData();
-        document.title = "Admin | Socials";
+        document.title = "Admin | Links";
     }, []);
 
     const fetchData = async () => {
         const { data, error } = await supabase
-            .from("socials")
+            .from("links")
             .select()
             .order("id", { ascending: true, nullsFirst: true });
+
         if (error) {
             console.error("Error fetching data:", error.message);
         } else {
-            setSocials(data);
+            setLinks(data);
         }
     };
 
     const handleCreate = () => {
         setCreateMode(true);
-        navigate("/socials/create");
+        navigate("/links/create");
     };
 
     const handleConfirmDelete = async () => {
@@ -47,7 +48,7 @@ function Socials() {
 
         try {
             const { error } = await supabase
-                .from("socials")
+                .from("links")
                 .delete()
                 .eq("id", deleteId);
 
@@ -80,14 +81,13 @@ function Socials() {
     };
 
     const handleEdit = (id) => {
-        navigate(`/socials/edit/${id}`);
+        navigate(`/links/edit/${id}`);
     };
 
     return (
         <div>
             <div id="wrapper">
                 <Sidebar />
-
                 <div id="content-wrapper" className="d-flex flex-column">
                     <Navbar />
                     <div id="content">
@@ -95,7 +95,7 @@ function Socials() {
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary">
-                                        Socials
+                                        Links
                                     </h6>
                                     {!isCreateMode && (
                                         <button
@@ -129,7 +129,7 @@ function Socials() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Id Socials
+                                                        Id Links
                                                     </th>
                                                     <th
                                                         style={{
@@ -147,7 +147,16 @@ function Socials() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Href
+                                                        Url
+                                                    </th>
+                                                    <th
+                                                        style={{
+                                                            verticalAlign:
+                                                                "middle",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        Image
                                                     </th>
                                                     <th
                                                         style={{
@@ -161,7 +170,7 @@ function Socials() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {socials.map((item) => (
+                                                {links.map((item) => (
                                                     <tr key={item.id}>
                                                         <td
                                                             style={{
@@ -191,7 +200,40 @@ function Socials() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.href}
+                                                            {item.url}
+                                                        </td>
+                                                        <td
+                                                            style={{
+                                                                textAlign:
+                                                                    "center",
+                                                            }}
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        "flex",
+                                                                    alignItems:
+                                                                        "center",
+                                                                    justifyContent:
+                                                                        "center",
+                                                                    height: "50px",
+                                                                }}
+                                                            >
+                                                                <img
+                                                                    src={
+                                                                        item.image
+                                                                    }
+                                                                    alt="Avatar"
+                                                                    style={{
+                                                                        maxWidth:
+                                                                            "100%",
+                                                                        maxHeight:
+                                                                            "100%",
+                                                                        width: "auto",
+                                                                        height: "auto",
+                                                                    }}
+                                                                />
+                                                            </div>
                                                         </td>
 
                                                         <td
@@ -333,4 +375,4 @@ function Socials() {
     );
 }
 
-export default Socials;
+export default Links;

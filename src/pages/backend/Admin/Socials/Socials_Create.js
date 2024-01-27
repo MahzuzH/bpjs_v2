@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { FiCheck } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/backend/Sidebar";
-import Navbar from "../../../components/backend/Navbar";
-import Footer from "../../../components/backend/Footer";
+import Sidebar from "../../../../components/backend/Sidebar";
+import Navbar from "../../../../components/backend/Navbar";
+import Footer from "../../../../components/backend/Footer";
 import { createClient } from "@supabase/supabase-js";
 
 function Socials_Create() {

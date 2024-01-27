@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { FiCheckCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/backend/Sidebar";
-import Navbar from "../../../components/backend/Navbar";
-import Footer from "../../../components/backend/Footer";
+import Sidebar from "../../../../components/backend/Sidebar";
+import Navbar from "../../../../components/backend/Navbar";
+import Footer from "../../../../components/backend/Footer";
 import { createClient } from "@supabase/supabase-js";
 
-function Links_Create() {
+function Profiles_Create() {
+    const [name, setName] = useState("");
     const [title, setTitle] = useState("");
-    const [url, setUrl] = useState("");
-    const [image, setImage] = useState("");
+    const [avatar, setAvatar] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [complete, setComplete] = useState(false);
@@ -33,7 +32,7 @@ function Links_Create() {
     }, [complete]);
 
     const handleCreate = () => {
-        if (!title || !url || !image) {
+        if (!name || !title || !avatar) {
             alert("Please fill in all fields");
             return;
         }
@@ -42,12 +41,13 @@ function Links_Create() {
     };
 
     const handleConfirm = async () => {
+        // Set loading to true when confirming
         setLoading(true);
 
         try {
             const { data, error } = await supabase
-                .from("links")
-                .insert([{ title, url, image }]);
+                .from("profiles")
+                .insert([{ name, title, avatar }]);
 
             if (error) {
                 console.error("Error creating data:", error.message);
@@ -58,7 +58,7 @@ function Links_Create() {
                 setTimeout(() => {
                     setShowModal(false);
                     setLoading(false);
-                    navigate("/links");
+                    navigate("/profiles");
                 }, 2000);
             }
         } catch (error) {
@@ -69,7 +69,7 @@ function Links_Create() {
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setLoading(false);
+        setLoading(false); // Reset loading state when closing the modal
     };
 
     return (
@@ -83,11 +83,22 @@ function Links_Create() {
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary">
-                                        Links - Create
+                                        Profiles - Create
                                     </h6>
                                 </div>
                                 <div className="card-body">
                                     <form>
+                                        <div className="form-group">
+                                            <label>Name:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={name}
+                                                onChange={(e) =>
+                                                    setName(e.target.value)
+                                                }
+                                            />
+                                        </div>
                                         <div className="form-group">
                                             <label>Title:</label>
                                             <input
@@ -100,24 +111,13 @@ function Links_Create() {
                                             />
                                         </div>
                                         <div className="form-group">
-                                            <label>URL:</label>
+                                            <label>Avatar URL:</label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                value={url}
+                                                value={avatar}
                                                 onChange={(e) =>
-                                                    setUrl(e.target.value)
-                                                }
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>Image:</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={image}
-                                                onChange={(e) =>
-                                                    setImage(e.target.value)
+                                                    setAvatar(e.target.value)
                                                 }
                                             />
                                         </div>
@@ -139,7 +139,7 @@ function Links_Create() {
                 {/* Modal Konfirmasi */}
                 <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Tambah Data Links</Modal.Title>
+                        <Modal.Title>Tambah Data Profiles</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="text-center">
@@ -208,4 +208,4 @@ function Links_Create() {
     );
 }
 
-export default Links_Create;
+export default Profiles_Create;

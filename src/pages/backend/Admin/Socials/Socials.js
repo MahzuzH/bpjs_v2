@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Modal, Button, Spinner, Fade } from "react-bootstrap";
 import { FiEdit, FiTrash2, FiPlus, FiCheck } from "react-icons/fi";
-import Sidebar from "../../../components/backend/Sidebar";
-import Navbar from "../../../components/backend/Navbar";
-import Footer from "../../../components/backend/Footer";
+import Sidebar from "../../../../components/backend/Sidebar";
+import Navbar from "../../../../components/backend/Navbar";
+import Footer from "../../../../components/backend/Footer";
 
-function Links() {
-    const [links, setLinks] = useState([]);
+function Socials() {
+    const [socials, setSocials] = useState([]);
     const [deleteId, setDeleteId] = useState(null);
     const [isCreateMode, setCreateMode] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -22,25 +22,24 @@ function Links() {
 
     useEffect(() => {
         fetchData();
-        document.title = "Admin | Links";
+        document.title = "Admin | Socials";
     }, []);
 
     const fetchData = async () => {
         const { data, error } = await supabase
-            .from("links")
+            .from("socials")
             .select()
             .order("id", { ascending: true, nullsFirst: true });
-
         if (error) {
             console.error("Error fetching data:", error.message);
         } else {
-            setLinks(data);
+            setSocials(data);
         }
     };
 
     const handleCreate = () => {
         setCreateMode(true);
-        navigate("/links/create");
+        navigate("/socials/create");
     };
 
     const handleConfirmDelete = async () => {
@@ -48,7 +47,7 @@ function Links() {
 
         try {
             const { error } = await supabase
-                .from("links")
+                .from("socials")
                 .delete()
                 .eq("id", deleteId);
 
@@ -81,13 +80,14 @@ function Links() {
     };
 
     const handleEdit = (id) => {
-        navigate(`/links/edit/${id}`);
+        navigate(`/socials/edit/${id}`);
     };
 
     return (
         <div>
             <div id="wrapper">
                 <Sidebar />
+
                 <div id="content-wrapper" className="d-flex flex-column">
                     <Navbar />
                     <div id="content">
@@ -95,7 +95,7 @@ function Links() {
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary">
-                                        Links
+                                        Socials
                                     </h6>
                                     {!isCreateMode && (
                                         <button
@@ -129,7 +129,7 @@ function Links() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Id Links
+                                                        Id Socials
                                                     </th>
                                                     <th
                                                         style={{
@@ -147,16 +147,7 @@ function Links() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Url
-                                                    </th>
-                                                    <th
-                                                        style={{
-                                                            verticalAlign:
-                                                                "middle",
-                                                            textAlign: "center",
-                                                        }}
-                                                    >
-                                                        Image
+                                                        Href
                                                     </th>
                                                     <th
                                                         style={{
@@ -170,7 +161,7 @@ function Links() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {links.map((item) => (
+                                                {socials.map((item) => (
                                                     <tr key={item.id}>
                                                         <td
                                                             style={{
@@ -200,40 +191,7 @@ function Links() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.url}
-                                                        </td>
-                                                        <td
-                                                            style={{
-                                                                textAlign:
-                                                                    "center",
-                                                            }}
-                                                        >
-                                                            <div
-                                                                style={{
-                                                                    display:
-                                                                        "flex",
-                                                                    alignItems:
-                                                                        "center",
-                                                                    justifyContent:
-                                                                        "center",
-                                                                    height: "50px",
-                                                                }}
-                                                            >
-                                                                <img
-                                                                    src={
-                                                                        item.image
-                                                                    }
-                                                                    alt="Avatar"
-                                                                    style={{
-                                                                        maxWidth:
-                                                                            "100%",
-                                                                        maxHeight:
-                                                                            "100%",
-                                                                        width: "auto",
-                                                                        height: "auto",
-                                                                    }}
-                                                                />
-                                                            </div>
+                                                            {item.href}
                                                         </td>
 
                                                         <td
@@ -375,4 +333,4 @@ function Links() {
     );
 }
 
-export default Links;
+export default Socials;

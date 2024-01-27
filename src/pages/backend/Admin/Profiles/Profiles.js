@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Modal, Button, Spinner, Fade } from "react-bootstrap";
 import { FiEdit, FiTrash2, FiPlus, FiCheck } from "react-icons/fi";
-import Sidebar from "../../../components/backend/Sidebar";
-import Navbar from "../../../components/backend/Navbar";
-import Footer from "../../../components/backend/Footer";
+import Sidebar from "../../../../components/backend/Sidebar";
+import Navbar from "../../../../components/backend/Navbar";
+import Footer from "../../../../components/backend/Footer";
 
 function Profiles() {
     const [profiles, setProfiles] = useState([]);

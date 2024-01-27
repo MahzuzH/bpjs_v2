@@ -3,10 +3,11 @@ import "./Admin.css";
 import Sidebar from "../../../components/backend/Sidebar";
 import Navbar from "../../../components/backend/Navbar";
 import Footer from "../../../components/backend/Footer";
-import Profiles from "../Profiles/Profiles";
 import { NavLink, Routes, Route } from "react-router-dom";
+import { useUser } from "../Login/UserContext";
 
 function Admin() {
+    const { userEmail } = useUser();
     useEffect(() => {
         document.title = "Admin | Dashboard";
     }, []);
@@ -16,7 +17,7 @@ function Admin() {
                 <Sidebar />
 
                 <div id="content-wrapper" className="d-flex flex-column">
-                    <Navbar />
+                    <Navbar userEmail={userEmail} />
                     <div id="content">
                         <main></main>
                     </div>
@@ -72,13 +73,9 @@ function Admin() {
 
             <script src="vendor/jquery/jquery.min.js"></script>
             <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
             <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
             <script src="js/sb-admin-2.min.js"></script>
-
             <script src="vendor/chart.js/Chart.min.js"></script>
-
             <script src="js/demo/chart-area-demo.js"></script>
             <script src="js/demo/chart-pie-demo.js"></script>
         </body>

@@ -2,51 +2,50 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./Supabase"; //
-import Sidebar from "../../../components/backend/Sidebar";
-import Navbar from "../../../components/backend/Navbar";
-import Footer from "../../../components/backend/Footer";
+import Sidebar from "../../../../components/backend/Sidebar";
+import Navbar from "../../../../components/backend/Navbar";
+import Footer from "../../../../components/backend/Footer";
 import { Modal, Button, Spinner } from "react-bootstrap";
 
-function Links_Edit() {
+function Soacil_Edit() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [linksData, setLinksData] = useState({
+    const [socialsData, setSocialsData] = useState({
         title: "",
-        url: "",
-        image: "",
+        href: "",
     });
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [complete, setComplete] = useState(false);
 
     useEffect(() => {
-        const fetchLinksData = async () => {
+        const fetchSocialsData = async () => {
             try {
                 const { data, error } = await supabase
-                    .from("links")
+                    .from("socials")
                     .select()
                     .eq("id", id)
                     .single();
 
                 if (error) {
                     console.error(
-                        "Error fetching profile data:",
+                        "Error fetching socials data:",
                         error.message
                     );
                 } else if (data) {
-                    setLinksData(data);
+                    setSocialsData(data);
                 }
             } catch (error) {
                 console.error("Unhandled error:", error.message);
             }
         };
 
-        fetchLinksData();
+        fetchSocialsData();
     }, [id, supabase]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setLinksData((prevData) => ({
+        setSocialsData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
@@ -69,11 +68,10 @@ function Links_Edit() {
         setLoading(true);
         try {
             const { error } = await supabase
-                .from("links")
+                .from("socials")
                 .update({
-                    title: linksData.title,
-                    url: linksData.url,
-                    image: linksData.image,
+                    title: socialsData.title,
+                    href: socialsData.href,
                 })
                 .eq("id", id);
 
@@ -85,7 +83,7 @@ function Links_Edit() {
 
                 setTimeout(() => {
                     closeConfirmModal(); // Menutup modal konfirmasi
-                    navigate("/links");
+                    navigate("/socials");
                 }, 2000);
             }
         } catch (error) {
@@ -103,7 +101,7 @@ function Links_Edit() {
                     <div id="content">
                         <div className="container-fluid">
                             <h1 className="h3 mb-4 text-gray-800">
-                                Edit Links
+                                Edit Socials
                             </h1>
 
                             <form onSubmit={handleFormSubmit}>
@@ -114,31 +112,19 @@ function Links_Edit() {
                                         className="form-control"
                                         id="title"
                                         name="title"
-                                        value={linksData.title}
+                                        value={socialsData.title}
                                         onChange={handleInputChange}
                                     />
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="url">URL:</label>
+                                    <label htmlFor="href">Href:</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="url"
-                                        name="url"
-                                        value={linksData.url}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="image">Image:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="image"
-                                        name="image"
-                                        value={linksData.image}
+                                        id="href"
+                                        name="href"
+                                        value={socialsData.href}
                                         onChange={handleInputChange}
                                     />
                                 </div>
@@ -160,7 +146,7 @@ function Links_Edit() {
             {/* Modal Konfirmasi */}
             <Modal show={showConfirmModal} onHide={closeConfirmModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Update Links Data</Modal.Title>
+                    <Modal.Title>Update Socials Data</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="text-center">
@@ -221,4 +207,4 @@ function Links_Edit() {
     );
 }
 
-export default Links_Edit;
+export default Soacil_Edit;

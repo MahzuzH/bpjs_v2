@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { FiCheck } from "react-icons/fi";
+import { FiCheckCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/backend/Sidebar";
-import Navbar from "../../../components/backend/Navbar";
-import Footer from "../../../components/backend/Footer";
+import Sidebar from "../../../../components/backend/Sidebar";
+import Navbar from "../../../../components/backend/Navbar";
+import Footer from "../../../../components/backend/Footer";
 import { createClient } from "@supabase/supabase-js";
 
-function Profiles_Create() {
-    const [name, setName] = useState("");
+function Links_Create() {
     const [title, setTitle] = useState("");
-    const [avatar, setAvatar] = useState("");
+    const [url, setUrl] = useState("");
+    const [image, setImage] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [complete, setComplete] = useState(false);
@@ -33,7 +33,7 @@ function Profiles_Create() {
     }, [complete]);
 
     const handleCreate = () => {
-        if (!name || !title || !avatar) {
+        if (!title || !url || !image) {
             alert("Please fill in all fields");
             return;
         }
@@ -42,13 +42,12 @@ function Profiles_Create() {
     };
 
     const handleConfirm = async () => {
-        // Set loading to true when confirming
         setLoading(true);
 
         try {
             const { data, error } = await supabase
-                .from("profiles")
-                .insert([{ name, title, avatar }]);
+                .from("links")
+                .insert([{ title, url, image }]);
 
             if (error) {
                 console.error("Error creating data:", error.message);
@@ -59,7 +58,7 @@ function Profiles_Create() {
                 setTimeout(() => {
                     setShowModal(false);
                     setLoading(false);
-                    navigate("/profiles");
+                    navigate("/links");
                 }, 2000);
             }
         } catch (error) {
@@ -70,7 +69,7 @@ function Profiles_Create() {
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setLoading(false); // Reset loading state when closing the modal
+        setLoading(false);
     };
 
     return (
@@ -84,22 +83,11 @@ function Profiles_Create() {
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary">
-                                        Profiles - Create
+                                        Links - Create
                                     </h6>
                                 </div>
                                 <div className="card-body">
                                     <form>
-                                        <div className="form-group">
-                                            <label>Name:</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={name}
-                                                onChange={(e) =>
-                                                    setName(e.target.value)
-                                                }
-                                            />
-                                        </div>
                                         <div className="form-group">
                                             <label>Title:</label>
                                             <input
@@ -112,13 +100,24 @@ function Profiles_Create() {
                                             />
                                         </div>
                                         <div className="form-group">
-                                            <label>Avatar URL:</label>
+                                            <label>URL:</label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                value={avatar}
+                                                value={url}
                                                 onChange={(e) =>
-                                                    setAvatar(e.target.value)
+                                                    setUrl(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Image:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={image}
+                                                onChange={(e) =>
+                                                    setImage(e.target.value)
                                                 }
                                             />
                                         </div>
@@ -140,7 +139,7 @@ function Profiles_Create() {
                 {/* Modal Konfirmasi */}
                 <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Tambah Data Profiles</Modal.Title>
+                        <Modal.Title>Tambah Data Links</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="text-center">
@@ -209,4 +208,4 @@ function Profiles_Create() {
     );
 }
 
-export default Profiles_Create;
+export default Links_Create;

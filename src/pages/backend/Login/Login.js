@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useUser } from "./UserContext";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const { setUser } = useUser();
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
         process.env.REACT_APP_SUPABASE_PROJ_KEY
@@ -25,7 +27,9 @@ function Login() {
             if (error) {
                 throw error;
             }
+
             console.log("Login successful:", data);
+            setUser(email); // Set user's email in the context
             navigate("/admin");
         } catch (error) {
             console.error("Login failed:", error.message);
