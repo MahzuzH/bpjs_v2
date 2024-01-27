@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import "./Admin.css";
-import Sidebar from "../../components/backend/Sidebar";
-import Navbar from "../../components/backend/Navbar";
-import Footer from "../../components/backend/Footer";
-import Profiles from "./Profiles/Profiles";
+import Sidebar from "../../../components/backend/Sidebar";
+import Navbar from "../../../components/backend/Navbar";
+import Footer from "../../../components/backend/Footer";
+import Profiles from "../Profiles/Profiles";
 import { NavLink, Routes, Route } from "react-router-dom";
 
 function Admin() {

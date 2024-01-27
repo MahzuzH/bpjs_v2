@@ -8,51 +8,64 @@ import Navbar from "../../../components/backend/Navbar";
 import Footer from "../../../components/backend/Footer";
 
 function Socials() {
-    const [profiles, setProfiles] = useState([]);
+    const [socials, setSocials] = useState([]);
     const [deleteId, setDeleteId] = useState(null);
+    const [isCreateMode, setCreateMode] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setDeleteLoading] = useState(false);
     const [complete, setComplete] = useState(false);
+    const navigate = useNavigate();
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
         process.env.REACT_APP_SUPABASE_PROJ_KEY
     );
 
+    useEffect(() => {
+        fetchData();
+        document.title = "Admin | Socials";
+    }, []);
+
     const fetchData = async () => {
-        const { data, error } = await supabase.from("profiles").select();
+        const { data, error } = await supabase
+            .from("socials")
+            .select()
+            .order("id", { ascending: true, nullsFirst: true });
         if (error) {
             console.error("Error fetching data:", error.message);
         } else {
-            setProfiles(data);
+            setSocials(data);
         }
     };
-
-    const navigate = useNavigate();
-    const [isCreateMode, setCreateMode] = useState(false);
 
     const handleCreate = () => {
         setCreateMode(true);
-        navigate("/profiles/create");
+        navigate("/socials/create");
     };
 
-    const handleDelete = async (id) => {
+    const handleConfirmDelete = async () => {
+        setDeleteLoading(true);
+
         try {
             const { error } = await supabase
-                .from("profiles")
+                .from("socials")
                 .delete()
-                .eq("id", id);
+                .eq("id", deleteId);
+
             if (error) {
                 console.error("Error deleting data:", error.message);
             } else {
-                fetchData();
+                setComplete(true);
+
+                setTimeout(() => {
+                    setShowDeleteModal(false);
+                    setDeleteLoading(false);
+                    setComplete(false);
+                    fetchData();
+                }, 2000);
             }
         } catch (error) {
-            console.error("Unhandled error:", error.message);
+            console.error("Error deleting data:", error.message);
         }
-    };
-
-    const handleEdit = (id) => {
-        console.log(`Edit item with ID ${id}`);
     };
 
     const handleShowDeleteModal = (id) => {
@@ -65,27 +78,10 @@ function Socials() {
         setShowDeleteModal(false);
         setDeleteId(null);
     };
-    const handleConfirmDelete = async () => {
-        const { error } = await supabase
-            .from("profiles")
-            .delete()
-            .eq("id", deleteId);
-        if (error) {
-            console.error("Error deleting data:", error.message);
-        } else {
-            setComplete(true);
-            setTimeout(() => {
-                setShowDeleteModal(false);
-                setDeleteId(null);
-                fetchData();
-            }, 2000);
-        }
-    };
 
-    useEffect(() => {
-        fetchData();
-        document.title = "Admin | Socials";
-    }, []);
+    const handleEdit = (id) => {
+        navigate(`/socials/edit/${id}`);
+    };
 
     return (
         <div>
@@ -99,7 +95,7 @@ function Socials() {
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary">
-                                        Profiles
+                                        Socials
                                     </h6>
                                     {!isCreateMode && (
                                         <button
@@ -133,16 +129,7 @@ function Socials() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Id Profiles
-                                                    </th>
-                                                    <th
-                                                        style={{
-                                                            verticalAlign:
-                                                                "middle",
-                                                            textAlign: "center",
-                                                        }}
-                                                    >
-                                                        Name
+                                                        Id Socials
                                                     </th>
                                                     <th
                                                         style={{
@@ -160,7 +147,7 @@ function Socials() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Avatar
+                                                        Href
                                                     </th>
                                                     <th
                                                         style={{
@@ -174,7 +161,7 @@ function Socials() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {profiles.map((item) => (
+                                                {socials.map((item) => (
                                                     <tr key={item.id}>
                                                         <td
                                                             style={{
@@ -194,7 +181,7 @@ function Socials() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.name}
+                                                            {item.title}
                                                         </td>
                                                         <td
                                                             style={{
@@ -204,40 +191,7 @@ function Socials() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.title}
-                                                        </td>
-                                                        <td
-                                                            style={{
-                                                                textAlign:
-                                                                    "center",
-                                                            }}
-                                                        >
-                                                            <div
-                                                                style={{
-                                                                    display:
-                                                                        "flex",
-                                                                    alignItems:
-                                                                        "center",
-                                                                    justifyContent:
-                                                                        "center",
-                                                                    height: "50px",
-                                                                }}
-                                                            >
-                                                                <img
-                                                                    src={
-                                                                        item.avatar
-                                                                    }
-                                                                    alt="Avatar"
-                                                                    style={{
-                                                                        maxWidth:
-                                                                            "100%",
-                                                                        maxHeight:
-                                                                            "100%",
-                                                                        width: "auto",
-                                                                        height: "auto",
-                                                                    }}
-                                                                />
-                                                            </div>
+                                                            {item.href}
                                                         </td>
 
                                                         <td
@@ -319,25 +273,42 @@ function Socials() {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="text-center">
-                        <div className="checklist-icon mx-auto">
-                            {complete && <FiCheck size={40} color="green" />}
-                        </div>
-                        {loading ? (
-                            <div className="flex items-center justify-center">
+                        {complete ? (
+                            <div className="checklist-icon mx-auto text-center">
+                                <p
+                                    style={{
+                                        fontSize: "40px",
+                                        color: "green",
+                                        marginBottom: "10px",
+                                    }}
+                                >
+                                    ✅
+                                </p>
+                                <p className="mt-2">
+                                    {/* <FiCheck size={40} color="green" /> */}
+                                    Data berhasil dihapus!
+                                </p>
+                            </div>
+                        ) : loading ? (
+                            <div className="text-center">
                                 <Spinner
-                                    animation="border"
+                                    animation="grow"
                                     role="status"
                                     variant="primary"
-                                    className="mx-auto"
+                                    style={{
+                                        width: "4rem",
+                                        height: "4rem",
+                                        margin: "auto",
+                                    }}
                                 >
-                                    <span className="sr-only">Loading...</span>
+                                    <span className="sr-only">Memuat...</span>
                                 </Spinner>
-                                <p className="mt-2">Deleting...</p>
+                                <p className="mt-2">Sedang menghapus...</p>
                             </div>
-                        ) : complete ? (
-                            <p className="mt-2">Data berhasil dihapus!</p>
                         ) : (
-                            "Apakah anda yakin untuk menghapus data?"
+                            <p className="mt-2">
+                                Apa anda yakin akan menghapus data ini?
+                            </p>
                         )}
                     </div>
                 </Modal.Body>
@@ -354,7 +325,7 @@ function Socials() {
                         onClick={handleConfirmDelete}
                         className="btn bg-primary font-semibold text-white "
                     >
-                        {complete ? "Close" : "Confirm"}
+                        {complete ? "Iya" : "Iya"}
                     </Button>
                 </Modal.Footer>
             </Modal>

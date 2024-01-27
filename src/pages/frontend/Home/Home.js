@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
+import XIcon from "../icon/XIcon";
+import LinkedinIcon from "../icon/LinkdeinIcon";
 import InstagramIcon from "../icon/InstagramIcon";
 import TiktokIcon from "../icon/TiktokIcon";
 import FacebookIcon from "../icon/FacebookIcon";
@@ -130,6 +132,10 @@ function Home() {
                                     <TiktokIcon href={social.href} />
                                 ) : social.title === "Facebook" ? (
                                     <FacebookIcon href={social.href} />
+                                ) : social.title === "X" ? (
+                                    <XIcon href={social.href} />
+                                ) : social.title === "Linkedin" ? (
+                                    <LinkedinIcon href={social.href} />
                                 ) : null}
                             </a>
                         ))}

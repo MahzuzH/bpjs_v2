@@ -39,33 +39,37 @@ function Links_Create() {
         }
 
         setShowModal(true);
+    };
+
+    const handleConfirm = async () => {
         setLoading(true);
 
-        supabase
-            .from("links")
-            .insert([{ title, url, image }])
-            .then(({ data, error }) => {
-                if (error) {
-                    console.error("Error creating data:", error.message);
-                    alert("Error creating data");
-                } else {
-                    setComplete(true);
-                    setLoading(false);
+        try {
+            const { data, error } = await supabase
+                .from("links")
+                .insert([{ title, url, image }]);
 
-                    setTimeout(() => {
-                        setShowModal(false);
-                        navigate("/links");
-                    }, 2000);
-                }
-            })
-            .catch((error) => {
+            if (error) {
                 console.error("Error creating data:", error.message);
                 alert("Error creating data");
-            });
+            } else {
+                setComplete(true);
+
+                setTimeout(() => {
+                    setShowModal(false);
+                    setLoading(false);
+                    navigate("/links");
+                }, 2000);
+            }
+        } catch (error) {
+            console.error("Error creating data:", error.message);
+            alert("Error creating data");
+        }
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
+        setLoading(false);
     };
 
     return (
@@ -151,7 +155,6 @@ function Links_Create() {
                                         ✅
                                     </p>
                                     <p className="mt-2">
-                                        {/* <FiCheck size={40} color="green" /> */}
                                         Data berhasil ditambahkan!
                                     </p>
                                 </div>
@@ -188,14 +191,15 @@ function Links_Create() {
                             onClick={handleCloseModal}
                             className="btn bg-danger btn-secondary font-semibold text-white"
                         >
-                            Cancel
+                            Batal
                         </Button>
                         <Button
                             variant="primary"
-                            onClick={handleCreate}
+                            onClick={handleConfirm}
                             className="btn bg-primary font-semibold text-white "
+                            disabled={loading}
                         >
-                            {complete ? "Close" : "Confirm"}
+                            Iya
                         </Button>
                     </Modal.Footer>
                 </Modal>

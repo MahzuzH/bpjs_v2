@@ -17,7 +17,7 @@ function Sidebar() {
             id="accordionSidebar"
         >
             <Link
-                to={"/dashboard"}
+                to={"/admin"}
                 className="sidebar-brand d-flex align-items-center justify-content-center"
             >
                 <div className="sidebar-brand-icon rotate-n-15">
@@ -27,7 +27,7 @@ function Sidebar() {
             </Link>
             <hr className="sidebar-divider my-0" />
             <li className="nav-item">
-                <Link to={"/dashboard"} className="nav-link">
+                <Link to={"/admin"} className="nav-link">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </Link>
@@ -36,21 +36,21 @@ function Sidebar() {
             <div className="sidebar-heading">Table</div>
 
             <li className={navItemClass("/profiles")}>
-                <Link to={"/profiles"} className="nav-link">
+                <Link to={"/admin/profiles"} className="nav-link">
                     <i className="fas fa-fw fa-user"></i>
                     <span>Profiles</span>
                 </Link>
             </li>
 
             <li className={navItemClass("/links")}>
-                <Link to={"/links"} className="nav-link">
+                <Link to={"/admin/links"} className="nav-link">
                     <i className="fas fa-fw fa-link"></i>
                     <span>Links</span>
                 </Link>
             </li>
 
             <li className={navItemClass("/socials")}>
-                <Link to={"/socials"} className="nav-link">
+                <Link to={"/admin/socials"} className="nav-link">
                     <i className="fas fa-fw fa-rss"></i>
                     <span>Socials</span>
                 </Link>

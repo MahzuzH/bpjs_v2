@@ -213,7 +213,7 @@ function Links_Edit() {
                         onClick={confirmUpdate}
                         className="btn bg-primary font-semibold text-white"
                     >
-                        {complete ? "Tutup" : "Konfirmasi"}
+                        {complete ? "Batal" : "Iya"}
                     </Button>
                 </Modal.Footer>
             </Modal>

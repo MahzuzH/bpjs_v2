@@ -39,33 +39,38 @@ function Profiles_Create() {
         }
 
         setShowModal(true);
+    };
+
+    const handleConfirm = async () => {
+        // Set loading to true when confirming
         setLoading(true);
 
-        supabase
-            .from("profiles")
-            .insert([{ name, title, avatar }])
-            .then(({ data, error }) => {
-                if (error) {
-                    console.error("Error creating data:", error.message);
-                    alert("Error creating data");
-                } else {
-                    setComplete(true);
-                    setLoading(false);
+        try {
+            const { data, error } = await supabase
+                .from("profiles")
+                .insert([{ name, title, avatar }]);
 
-                    setTimeout(() => {
-                        setShowModal(false);
-                        navigate("/profiles");
-                    }, 2000);
-                }
-            })
-            .catch((error) => {
+            if (error) {
                 console.error("Error creating data:", error.message);
                 alert("Error creating data");
-            });
+            } else {
+                setComplete(true);
+
+                setTimeout(() => {
+                    setShowModal(false);
+                    setLoading(false);
+                    navigate("/profiles");
+                }, 2000);
+            }
+        } catch (error) {
+            console.error("Error creating data:", error.message);
+            alert("Error creating data");
+        }
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
+        setLoading(false); // Reset loading state when closing the modal
     };
 
     return (
@@ -151,7 +156,6 @@ function Profiles_Create() {
                                         ✅
                                     </p>
                                     <p className="mt-2">
-                                        {/* <FiCheck size={40} color="green" /> */}
                                         Data berhasil ditambahkan!
                                     </p>
                                 </div>
@@ -188,14 +192,15 @@ function Profiles_Create() {
                             onClick={handleCloseModal}
                             className="btn bg-danger btn-secondary font-semibold text-white"
                         >
-                            Cancel
+                            Batal
                         </Button>
                         <Button
                             variant="primary"
-                            onClick={handleCreate}
+                            onClick={handleConfirm}
                             className="btn bg-primary font-semibold text-white "
+                            disabled={loading}
                         >
-                            {complete ? "Close" : "Confirm"}
+                            Iya
                         </Button>
                     </Modal.Footer>
                 </Modal>

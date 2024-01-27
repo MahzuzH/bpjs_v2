@@ -367,7 +367,7 @@ function Links() {
                         onClick={handleConfirmDelete}
                         className="btn bg-primary font-semibold text-white "
                     >
-                        {complete ? "Close" : "Confirm"}
+                        {complete ? "Iya" : "Iya"}
                     </Button>
                 </Modal.Footer>
             </Modal>
