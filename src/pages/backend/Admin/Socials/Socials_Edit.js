@@ -83,7 +83,7 @@ function Soacil_Edit() {
 
                 setTimeout(() => {
                     closeConfirmModal(); // Menutup modal konfirmasi
-                    navigate("/socials");
+                    navigate("/admin/socials");
                 }, 2000);
             }
         } catch (error) {

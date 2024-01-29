@@ -39,7 +39,7 @@ function Socials() {
 
     const handleCreate = () => {
         setCreateMode(true);
-        navigate("/socials/create");
+        navigate("/admin/socials/create");
     };
 
     const handleConfirmDelete = async () => {
@@ -80,7 +80,7 @@ function Socials() {
     };
 
     const handleEdit = (id) => {
-        navigate(`/socials/edit/${id}`);
+        navigate(`/admin/socials/edit/${id}`);
     };
 
     return (

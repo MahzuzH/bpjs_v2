@@ -58,7 +58,7 @@ function Profiles_Create() {
                 setTimeout(() => {
                     setShowModal(false);
                     setLoading(false);
-                    navigate("/profiles");
+                    navigate("/admin/profiles");
                 }, 2000);
             }
         } catch (error) {

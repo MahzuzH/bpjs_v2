@@ -58,7 +58,7 @@ function Links_Create() {
                 setTimeout(() => {
                     setShowModal(false);
                     setLoading(false);
-                    navigate("/links");
+                    navigate("/admin/links");
                 }, 2000);
             }
         } catch (error) {

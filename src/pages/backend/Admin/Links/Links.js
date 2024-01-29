@@ -40,7 +40,7 @@ function Links() {
 
     const handleCreate = () => {
         setCreateMode(true);
-        navigate("/links/create");
+        navigate("/admin/links/create");
     };
 
     const handleConfirmDelete = async () => {
@@ -81,7 +81,7 @@ function Links() {
     };
 
     const handleEdit = (id) => {
-        navigate(`/links/edit/${id}`);
+        navigate(`/admin/links/edit/${id}`);
     };
 
     return (

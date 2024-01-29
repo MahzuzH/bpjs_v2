@@ -39,7 +39,7 @@ function Profiles() {
 
     const handleCreate = () => {
         setCreateMode(true);
-        navigate("/profiles/create");
+        navigate("/admin/profiles/create");
     };
 
     const handleConfirmDelete = async () => {
@@ -80,7 +80,7 @@ function Profiles() {
     };
 
     const handleEdit = (id) => {
-        navigate(`/profiles/edit/${id}`);
+        navigate(`/admin/profiles/edit/${id}`);
     };
 
     return (

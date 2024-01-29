@@ -9,6 +9,8 @@ function Login() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const { setUser } = useUser();
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
@@ -17,6 +19,8 @@ function Login() {
 
     const handleLogin = async () => {
         try {
+            setLoading(true); // Set loading to true during login attempt
+
             const { data, error } = await supabase
                 .from("users")
                 .select()
@@ -29,10 +33,13 @@ function Login() {
             }
 
             console.log("Login successful:", data);
-            setUser(email); // Set user's email in the context
+            setUser(email);
             navigate("/admin");
         } catch (error) {
+            setError("Invalid email or password"); // Set error message
             console.error("Login failed:", error.message);
+        } finally {
+            setLoading(false); // Set loading to false after login attempt
         }
     };
 
@@ -71,9 +78,17 @@ function Login() {
                                         <div className="p-5">
                                             <div className="text-center pt-16">
                                                 <h1 className="h4 text-gray-900 mb-4">
-                                                    Welcome Back!
+                                                    Silahkan Login!
                                                 </h1>
                                             </div>
+                                            {error && (
+                                                <div
+                                                    className="alert alert-danger"
+                                                    role="alert"
+                                                >
+                                                    {error}
+                                                </div>
+                                            )}
                                             <form
                                                 className="email"
                                                 onSubmit={(e) => {
@@ -87,7 +102,7 @@ function Login() {
                                                         className="form-control form-control-user"
                                                         id="exampleInputEmail"
                                                         aria-describedby="emailHelp"
-                                                        placeholder="Enter Email Address..."
+                                                        placeholder="Email"
                                                         value={email}
                                                         onChange={(e) =>
                                                             setEmail(
@@ -148,7 +163,16 @@ function Login() {
                                                     className="btn bg-primary font-semibold text-white btn-user btn-block h-12"
                                                     onClick={handleLogin}
                                                 >
-                                                    Login
+                                                    {/* Display loading spinner if loading is true */}
+                                                    {loading ? (
+                                                        <span
+                                                            className="spinner-border spinner-border-sm"
+                                                            role="status"
+                                                            aria-hidden="true"
+                                                        ></span>
+                                                    ) : (
+                                                        "Login"
+                                                    )}
                                                 </button>
                                             </form>
                                         </div>

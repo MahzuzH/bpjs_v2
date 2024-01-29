@@ -85,7 +85,7 @@ function Profiles_Edit() {
 
                 setTimeout(() => {
                     closeConfirmModal(); // Menutup modal konfirmasi
-                    navigate("/profiles");
+                    navigate("/admin/profiles");
                 }, 2000);
             }
         } catch (error) {

@@ -57,7 +57,7 @@ function Socials_Create() {
                 setTimeout(() => {
                     setShowModal(false);
                     setLoading(false);
-                    navigate("/socials");
+                    navigate("/admin/socials");
                 }, 2000);
             }
         } catch (error) {

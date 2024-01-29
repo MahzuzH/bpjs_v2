@@ -85,7 +85,7 @@ function Links_Edit() {
 
                 setTimeout(() => {
                     closeConfirmModal(); // Menutup modal konfirmasi
-                    navigate("/links");
+                    navigate("/admin/links");
                 }, 2000);
             }
         } catch (error) {
