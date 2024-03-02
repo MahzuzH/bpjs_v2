@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Modal, Button, Spinner, Fade } from "react-bootstrap";
-import { FiEdit, FiTrash2, FiPlus, FiCheck } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiPlus } from "react-icons/fi";
 import Sidebar from "../../../../components/backend/Sidebar";
 import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
@@ -138,7 +138,7 @@ function Profiles() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Name
+                                                        Title
                                                     </th>
                                                     <th
                                                         style={{
@@ -147,7 +147,7 @@ function Profiles() {
                                                             textAlign: "center",
                                                         }}
                                                     >
-                                                        Title
+                                                        Subtitle
                                                     </th>
                                                     <th
                                                         style={{
@@ -190,7 +190,7 @@ function Profiles() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.name}
+                                                            {item.title}
                                                         </td>
                                                         <td
                                                             style={{
@@ -200,7 +200,7 @@ function Profiles() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.title}
+                                                            {item.subtitle}
                                                         </td>
                                                         <td
                                                             style={{
@@ -296,9 +296,9 @@ function Profiles() {
                                     </div>
                                 </div>
                             </div>
-                            <Footer />
                         </div>
                     </div>
+                    <Footer />
                 </div>
             </div>
 

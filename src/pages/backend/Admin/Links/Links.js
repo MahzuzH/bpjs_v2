@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Modal, Button, Spinner, Fade } from "react-bootstrap";
-import { FiEdit, FiTrash2, FiPlus, FiCheck } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiPlus } from "react-icons/fi";
 import Sidebar from "../../../../components/backend/Sidebar";
 import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
@@ -296,9 +296,9 @@ function Links() {
                                     </div>
                                 </div>
                             </div>
-                            <Footer />
                         </div>
                     </div>
+                    <Footer />
                 </div>
             </div>
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./Supabase"; //
 import Sidebar from "../../../../components/backend/Sidebar";
 import Navbar from "../../../../components/backend/Navbar";
@@ -11,8 +10,8 @@ function Profiles_Edit() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState({
-        name: "",
         title: "",
+        subtitle: "",
         avatar: "",
     });
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -71,8 +70,9 @@ function Profiles_Edit() {
             const { error } = await supabase
                 .from("profiles")
                 .update({
-                    name: profileData.name,
                     title: profileData.title,
+                    subtitle: profileData.subtitle,
+
                     avatar: profileData.avatar,
                 })
                 .eq("id", id);
@@ -84,7 +84,7 @@ function Profiles_Edit() {
                 setLoading(false);
 
                 setTimeout(() => {
-                    closeConfirmModal(); // Menutup modal konfirmasi
+                    closeConfirmModal();
                     navigate("/admin/profiles");
                 }, 2000);
             }
@@ -102,57 +102,67 @@ function Profiles_Edit() {
                     <Navbar />
                     <div id="content">
                         <div className="container-fluid">
-                            <h1 className="h3 mb-4 text-gray-800">
-                                Edit Profile
-                            </h1>
-
-                            <form onSubmit={handleFormSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="name">Name:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="name"
-                                        name="name"
-                                        value={profileData.name}
-                                        onChange={handleInputChange}
-                                    />
+                            <div className="card shadow mb-4">
+                                <div className="card-header py-3">
+                                    <h6 className="m-0 font-weight-bold text-primary">
+                                        Profiles - Edit
+                                    </h6>
                                 </div>
+                                <div className="card-body">
+                                    <form onSubmit={handleFormSubmit}>
+                                        <div className="form-group">
+                                            <label htmlFor="title">
+                                                Title:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="title"
+                                                name="title"
+                                                value={profileData.title}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="title">Title:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="title"
-                                        name="title"
-                                        value={profileData.title}
-                                        onChange={handleInputChange}
-                                    />
+                                        <div className="form-group">
+                                            <label htmlFor="subtitle">
+                                                Subtitle:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="subtitle"
+                                                name="subtitle"
+                                                value={profileData.subtitle}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="avatar">
+                                                Avatar URL:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="avatar"
+                                                name="avatar"
+                                                value={profileData.avatar}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            className="btn bg-primary font-semibold text-white"
+                                        >
+                                            Simpan
+                                        </button>
+                                    </form>
                                 </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="avatar">Avatar URL:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="avatar"
-                                        name="avatar"
-                                        value={profileData.avatar}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    className="btn bg-primary font-semibold text-white"
-                                >
-                                    Simpan
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </div>
-
                     <Footer />
                 </div>
             </div>

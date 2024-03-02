@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { FiLogIn } from "react-icons/fi";
 import XIcon from "../icon/XIcon";
 import LinkedinIcon from "../icon/LinkdeinIcon";
 import InstagramIcon from "../icon/InstagramIcon";
@@ -8,11 +9,8 @@ import TiktokIcon from "../icon/TiktokIcon";
 import FacebookIcon from "../icon/FacebookIcon";
 import Modal from "../modal/modal";
 import "../Home/Home.css";
+import { useNavigate } from "react-router-dom";
 
-const supabase = createClient(
-    process.env.REACT_APP_SUPABASE_PROJ_URL,
-    process.env.REACT_APP_SUPABASE_PROJ_KEY
-);
 function Home() {
     const [modalOn, setModalOn] = useState(false);
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -20,6 +18,13 @@ function Home() {
     const [links, setLinks] = useState([]);
     const [profiles, setProfiles] = useState([]);
     const [socials, setSocials] = useState([]);
+
+    const supabase = createClient(
+        process.env.REACT_APP_SUPABASE_PROJ_URL,
+        process.env.REACT_APP_SUPABASE_PROJ_KEY
+    );
+
+    const navigate = useNavigate();
 
     const openModal = () => {
         setModalOn(true);
@@ -64,9 +69,23 @@ function Home() {
         };
     }, []);
 
+    const handleLogin = () => {
+        navigate("/login");
+    };
+
     return (
         <div className="App">
             <div className="container flex items-center text-center flex-col justify-center mx-auto lg:px-36 md:px-4 ">
+                <button
+                    className="absolute top-4 right-4 px-2 py-2 bg-blue-800 text-white rounded-md "
+                    onClick={handleLogin}
+                >
+                    <FiLogIn
+                        style={{
+                            fontSize: "20px",
+                        }}
+                    />
+                </button>
                 {profiles &&
                     profiles.map((profile) => (
                         <div
@@ -81,10 +100,10 @@ function Home() {
                                 height={96}
                             />
                             <h1 className="font-bold mt-4 text-base text-black font-poppins md:text-lg lg:text-xl">
-                                {profile.name}
+                                {profile.title}
                             </h1>
                             <h2 className="px-8 mb-8 text-sm text-black font-monstserrat font-semibold md:text-base lg:text-lg">
-                                {profile.title}
+                                {profile.subtitle}
                             </h2>
                         </div>
                     ))}
@@ -120,22 +139,22 @@ function Home() {
                     {socials &&
                         socials.map((social) => (
                             <a
-                                key={social.id} // Ganti dengan key yang unik seperti link.title
-                                href={social.href}
+                                key={social.id}
+                                href={social.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="cursor-pointer hover:scale-110 transition-all duration-75"
                             >
                                 {social.title === "Instagram" ? (
-                                    <InstagramIcon href={social.href} />
+                                    <InstagramIcon href={social.url} />
                                 ) : social.title === "Tiktok" ? (
-                                    <TiktokIcon href={social.href} />
+                                    <TiktokIcon href={social.url} />
                                 ) : social.title === "Facebook" ? (
-                                    <FacebookIcon href={social.href} />
+                                    <FacebookIcon href={social.url} />
                                 ) : social.title === "X" ? (
-                                    <XIcon href={social.href} />
+                                    <XIcon href={social.url} />
                                 ) : social.title === "Linkedin" ? (
-                                    <LinkedinIcon href={social.href} />
+                                    <LinkedinIcon href={social.url} />
                                 ) : null}
                             </a>
                         ))}

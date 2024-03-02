@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from "react";
 import Home from "./pages/frontend/Home/Home";
 import Admin from "./pages/backend/Admin/Admin";
+import Dashboard from "./pages/backend/Admin/Dashboard/Dashboard";
 import Profiles from "./pages/backend/Admin/Profiles/Profiles";
 import Profiles_Create from "./pages/backend/Admin/Profiles/Profiles_Create";
 import Profiles_Edit from "./pages/backend/Admin/Profiles/Profiles_Edit";
@@ -21,7 +22,7 @@ const App = () => {
                 <Route path="/" element={<Home />} />
 
                 {/* Admin */}
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin" element={<Dashboard />} />
 
                 {/* Login */}
                 <Route path="/login" element={<Login />} />

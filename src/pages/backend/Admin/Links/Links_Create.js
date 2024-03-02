@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { FiCheckCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../../components/backend/Sidebar";
 import Navbar from "../../../../components/backend/Navbar";
@@ -131,9 +130,9 @@ function Links_Create() {
                                     </form>
                                 </div>
                             </div>
-                            <Footer />
                         </div>
                     </div>
+                    <Footer />
                 </div>
 
                 {/* Modal Konfirmasi */}

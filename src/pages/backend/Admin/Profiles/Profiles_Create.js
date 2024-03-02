@@ -7,8 +7,8 @@ import Footer from "../../../../components/backend/Footer";
 import { createClient } from "@supabase/supabase-js";
 
 function Profiles_Create() {
-    const [name, setName] = useState("");
     const [title, setTitle] = useState("");
+    const [subtitle, setSubtitle] = useState("");
     const [avatar, setAvatar] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ function Profiles_Create() {
     }, [complete]);
 
     const handleCreate = () => {
-        if (!name || !title || !avatar) {
+        if (!title || !subtitle || !avatar) {
             alert("Please fill in all fields");
             return;
         }
@@ -41,13 +41,12 @@ function Profiles_Create() {
     };
 
     const handleConfirm = async () => {
-        // Set loading to true when confirming
         setLoading(true);
 
         try {
             const { data, error } = await supabase
                 .from("profiles")
-                .insert([{ name, title, avatar }]);
+                .insert([{ title, subtitle, avatar }]);
 
             if (error) {
                 console.error("Error creating data:", error.message);
@@ -69,7 +68,7 @@ function Profiles_Create() {
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setLoading(false); // Reset loading state when closing the modal
+        setLoading(false);
     };
 
     return (
@@ -89,17 +88,6 @@ function Profiles_Create() {
                                 <div className="card-body">
                                     <form>
                                         <div className="form-group">
-                                            <label>Name:</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={name}
-                                                onChange={(e) =>
-                                                    setName(e.target.value)
-                                                }
-                                            />
-                                        </div>
-                                        <div className="form-group">
                                             <label>Title:</label>
                                             <input
                                                 type="text"
@@ -107,6 +95,17 @@ function Profiles_Create() {
                                                 value={title}
                                                 onChange={(e) =>
                                                     setTitle(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Subitle:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={subtitle}
+                                                onChange={(e) =>
+                                                    setSubtitle(e.target.value)
                                                 }
                                             />
                                         </div>
@@ -131,9 +130,9 @@ function Profiles_Create() {
                                     </form>
                                 </div>
                             </div>
-                            <Footer />
                         </div>
                     </div>
+                    <Footer />
                 </div>
 
                 {/* Modal Konfirmasi */}

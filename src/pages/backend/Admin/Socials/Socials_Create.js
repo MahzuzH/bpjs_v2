@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import { FiCheck } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../../components/backend/Sidebar";
 import Navbar from "../../../../components/backend/Navbar";
@@ -9,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 
 function Socials_Create() {
     const [title, setTitle] = useState("");
-    const [href, setHref] = useState("");
+    const [url, seturl] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [complete, setComplete] = useState(false);
@@ -32,7 +31,7 @@ function Socials_Create() {
     }, [complete]);
 
     const handleCreate = () => {
-        if (!title || !href) {
+        if (!title || !url) {
             alert("Please fill in all fields");
             return;
         }
@@ -46,7 +45,7 @@ function Socials_Create() {
         try {
             const { data, error } = await supabase
                 .from("socials")
-                .insert([{ title, href }]);
+                .insert([{ title, url }]);
 
             if (error) {
                 console.error("Error creating data:", error.message);
@@ -99,13 +98,13 @@ function Socials_Create() {
                                             />
                                         </div>
                                         <div className="form-group">
-                                            <label>Href URL:</label>
+                                            <label>Url:</label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                value={href}
+                                                value={url}
                                                 onChange={(e) =>
-                                                    setHref(e.target.value)
+                                                    seturl(e.target.value)
                                                 }
                                             />
                                         </div>
@@ -119,9 +118,9 @@ function Socials_Create() {
                                     </form>
                                 </div>
                             </div>
-                            <Footer />
                         </div>
                     </div>
+                    <Footer />
                 </div>
 
                 {/* Modal Konfirmasi */}

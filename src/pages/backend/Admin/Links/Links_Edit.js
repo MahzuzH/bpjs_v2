@@ -102,57 +102,65 @@ function Links_Edit() {
                     <Navbar />
                     <div id="content">
                         <div className="container-fluid">
-                            <h1 className="h3 mb-4 text-gray-800">
-                                Edit Links
-                            </h1>
-
-                            <form onSubmit={handleFormSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="title">Title:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="title"
-                                        name="title"
-                                        value={linksData.title}
-                                        onChange={handleInputChange}
-                                    />
+                            <div className="card shadow mb-4">
+                                <div className="card-header py-3">
+                                    <h6 className="m-0 font-weight-bold text-primary">
+                                        Links - Edit
+                                    </h6>
                                 </div>
+                                <div className="card-body">
+                                    <form onSubmit={handleFormSubmit}>
+                                        <div className="form-group">
+                                            <label htmlFor="title">
+                                                Title:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="title"
+                                                name="title"
+                                                value={linksData.title}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="url">URL:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="url"
-                                        name="url"
-                                        value={linksData.url}
-                                        onChange={handleInputChange}
-                                    />
+                                        <div className="form-group">
+                                            <label htmlFor="url">URL:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="url"
+                                                name="url"
+                                                value={linksData.url}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="image">
+                                                Image:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="image"
+                                                name="image"
+                                                value={linksData.image}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            className="btn bg-primary font-semibold text-white"
+                                        >
+                                            Simpan
+                                        </button>
+                                    </form>
                                 </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="image">Image:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="image"
-                                        name="image"
-                                        value={linksData.image}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    className="btn bg-primary font-semibold text-white"
-                                >
-                                    Simpan
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </div>
-
                     <Footer />
                 </div>
             </div>

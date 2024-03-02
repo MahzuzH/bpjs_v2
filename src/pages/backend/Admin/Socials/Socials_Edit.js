@@ -12,7 +12,7 @@ function Soacil_Edit() {
     const navigate = useNavigate();
     const [socialsData, setSocialsData] = useState({
         title: "",
-        href: "",
+        url: "",
     });
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -71,7 +71,7 @@ function Soacil_Edit() {
                 .from("socials")
                 .update({
                     title: socialsData.title,
-                    href: socialsData.href,
+                    url: socialsData.url,
                 })
                 .eq("id", id);
 
@@ -100,45 +100,51 @@ function Soacil_Edit() {
                     <Navbar />
                     <div id="content">
                         <div className="container-fluid">
-                            <h1 className="h3 mb-4 text-gray-800">
-                                Edit Socials
-                            </h1>
-
-                            <form onSubmit={handleFormSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="title">Title:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="title"
-                                        name="title"
-                                        value={socialsData.title}
-                                        onChange={handleInputChange}
-                                    />
+                            <div className="card shadow mb-4">
+                                <div className="card-header py-3">
+                                    <h1 className="m-0 font-weight-bold text-primary">
+                                        Socials - Edit
+                                    </h1>
                                 </div>
+                                <div className="card-body">
+                                    <form onSubmit={handleFormSubmit}>
+                                        <div className="form-group">
+                                            <label htmlFor="title">
+                                                Title:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="title"
+                                                name="title"
+                                                value={socialsData.title}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="href">Href:</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="href"
-                                        name="href"
-                                        value={socialsData.href}
-                                        onChange={handleInputChange}
-                                    />
+                                        <div className="form-group">
+                                            <label htmlFor="url">Url:</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="url"
+                                                name="url"
+                                                value={socialsData.url}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            className="btn bg-primary font-semibold text-white"
+                                        >
+                                            Simpan
+                                        </button>
+                                    </form>
                                 </div>
-
-                                <button
-                                    type="submit"
-                                    className="btn bg-primary font-semibold text-white"
-                                >
-                                    Simpan
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </div>
-
                     <Footer />
                 </div>
             </div>

@@ -1,16 +1,13 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-function Sidebar() {
+const Sidebar = () => {
     const location = useLocation();
 
-    const isActive = (path) => {
-        return location.pathname === path;
+    const navItemClass = (path) => {
+        return location.pathname === path ? "nav-item active" : "nav-item";
     };
 
-    const navItemClass = (path) => {
-        return isActive(path) ? "nav-item active" : "nav-item";
-    };
     return (
         <ul
             className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
@@ -26,7 +23,7 @@ function Sidebar() {
                 <div className="sidebar-brand-text mx-3">Admin Dashboard</div>
             </Link>
             <hr className="sidebar-divider my-0" />
-            <li className="nav-item">
+            <li className={navItemClass("/admin")}>
                 <Link to={"/admin"} className="nav-link">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
@@ -35,21 +32,21 @@ function Sidebar() {
             <hr className="sidebar-divider" />
             <div className="sidebar-heading">Table</div>
 
-            <li className={navItemClass("/profiles")}>
+            <li className={navItemClass("/admin/profiles")}>
                 <Link to={"/admin/profiles"} className="nav-link">
                     <i className="fas fa-fw fa-user"></i>
                     <span>Profiles</span>
                 </Link>
             </li>
 
-            <li className={navItemClass("/links")}>
+            <li className={navItemClass("/admin/links")}>
                 <Link to={"/admin/links"} className="nav-link">
                     <i className="fas fa-fw fa-link"></i>
                     <span>Links</span>
                 </Link>
             </li>
 
-            <li className={navItemClass("/socials")}>
+            <li className={navItemClass("/admin/socials")}>
                 <Link to={"/admin/socials"} className="nav-link">
                     <i className="fas fa-fw fa-rss"></i>
                     <span>Socials</span>
@@ -57,6 +54,6 @@ function Sidebar() {
             </li>
         </ul>
     );
-}
+};
 
 export default Sidebar;
