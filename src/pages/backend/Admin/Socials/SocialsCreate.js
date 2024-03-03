@@ -6,7 +6,7 @@ import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
 import { createClient } from "@supabase/supabase-js";
 
-function Socials_Create() {
+function SocialsCreate() {
     const [title, setTitle] = useState("");
     const [url, seturl] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -195,4 +195,4 @@ function Socials_Create() {
     );
 }
 
-export default Socials_Create;
+export default SocialsCreate;

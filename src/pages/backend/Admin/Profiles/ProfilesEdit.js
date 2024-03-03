@@ -6,7 +6,7 @@ import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
 import { Modal, Button, Spinner } from "react-bootstrap";
 
-function Profiles_Edit() {
+function ProfilesEdit() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState({
@@ -24,10 +24,11 @@ function Profiles_Edit() {
                 const { data, error } = await supabase
                     .from("profiles")
                     .select()
-                    .eq("id", id)
+                    .eq("id_profiles", id)
                     .single();
 
                 if (error) {
+                    console.log("ID Profiles:", id);
                     console.error(
                         "Error fetching profile data:",
                         error.message
@@ -72,10 +73,9 @@ function Profiles_Edit() {
                 .update({
                     title: profileData.title,
                     subtitle: profileData.subtitle,
-
                     avatar: profileData.avatar,
                 })
-                .eq("id", id);
+                .eq("id_profiles", id);
 
             if (error) {
                 console.error("Error updating profile data:", error.message);
@@ -231,4 +231,4 @@ function Profiles_Edit() {
     );
 }
 
-export default Profiles_Edit;
+export default ProfilesEdit;

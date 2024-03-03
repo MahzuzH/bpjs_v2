@@ -17,9 +17,13 @@ const Dashboard = () => {
     const fetchCounts = async () => {
         try {
             const [profileData, linkData, socialData] = await Promise.all([
-                supabase.from("profiles").select("id", { count: "exact" }),
-                supabase.from("links").select("id", { count: "exact" }),
-                supabase.from("socials").select("id", { count: "exact" }),
+                supabase
+                    .from("profiles")
+                    .select("id_profiles", { count: "exact" }),
+                supabase.from("links").select("id_links", { count: "exact" }),
+                supabase
+                    .from("socials")
+                    .select("id_socials", { count: "exact" }),
             ]);
 
             setProfilesCount(profileData.data.length);

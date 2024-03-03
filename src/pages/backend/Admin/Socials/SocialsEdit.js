@@ -7,7 +7,7 @@ import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
 import { Modal, Button, Spinner } from "react-bootstrap";
 
-function Soacil_Edit() {
+function SocialsEdit() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [socialsData, setSocialsData] = useState({
@@ -24,7 +24,7 @@ function Soacil_Edit() {
                 const { data, error } = await supabase
                     .from("socials")
                     .select()
-                    .eq("id", id)
+                    .eq("id_socials", id)
                     .single();
 
                 if (error) {
@@ -73,7 +73,7 @@ function Soacil_Edit() {
                     title: socialsData.title,
                     url: socialsData.url,
                 })
-                .eq("id", id);
+                .eq("id_socials", id);
 
             if (error) {
                 console.error("Error updating profile data:", error.message);
@@ -213,4 +213,4 @@ function Soacil_Edit() {
     );
 }
 
-export default Soacil_Edit;
+export default SocialsEdit;

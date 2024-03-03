@@ -29,7 +29,7 @@ function Socials() {
         const { data, error } = await supabase
             .from("socials")
             .select()
-            .order("id", { ascending: true, nullsFirst: true });
+            .order("id_socials", { ascending: true, nullsFirst: true });
         if (error) {
             console.error("Error fetching data:", error.message);
         } else {
@@ -49,7 +49,7 @@ function Socials() {
             const { error } = await supabase
                 .from("socials")
                 .delete()
-                .eq("id", deleteId);
+                .eq("id_socials", deleteId);
 
             if (error) {
                 console.error("Error deleting data:", error.message);
@@ -68,8 +68,8 @@ function Socials() {
         }
     };
 
-    const handleShowDeleteModal = (id) => {
-        setDeleteId(id);
+    const handleShowDeleteModal = (id_socials) => {
+        setDeleteId(id_socials);
         setShowDeleteModal(true);
         setComplete(false);
     };
@@ -79,8 +79,8 @@ function Socials() {
         setDeleteId(null);
     };
 
-    const handleEdit = (id) => {
-        navigate(`/admin/socials/edit/${id}`);
+    const handleEdit = (id_socials) => {
+        navigate(`/admin/socials/edit/${id_socials}`);
     };
 
     return (
@@ -162,7 +162,7 @@ function Socials() {
                                             </thead>
                                             <tbody>
                                                 {socials.map((item) => (
-                                                    <tr key={item.id}>
+                                                    <tr key={item.id_socials}>
                                                         <td
                                                             style={{
                                                                 verticalAlign:
@@ -171,7 +171,7 @@ function Socials() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.id}
+                                                            {item.id_socials}
                                                         </td>
                                                         <td
                                                             style={{
@@ -219,7 +219,7 @@ function Socials() {
                                                                     className="btn btn-danger btn-sm"
                                                                     onClick={() =>
                                                                         handleShowDeleteModal(
-                                                                            item.id
+                                                                            item.id_socials
                                                                         )
                                                                     }
                                                                 >
@@ -234,7 +234,7 @@ function Socials() {
                                                                     className="btn btn-primary btn-sm"
                                                                     onClick={() =>
                                                                         handleEdit(
-                                                                            item.id
+                                                                            item.id_socials
                                                                         )
                                                                     }
                                                                 >

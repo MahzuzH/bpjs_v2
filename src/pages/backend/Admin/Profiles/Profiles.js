@@ -29,7 +29,7 @@ function Profiles() {
         const { data, error } = await supabase
             .from("profiles")
             .select()
-            .order("id", { ascending: true, nullsFirst: true });
+            .order("id_profiles", { ascending: true, nullsFirst: true });
         if (error) {
             console.error("Error fetching data:", error.message);
         } else {
@@ -49,7 +49,7 @@ function Profiles() {
             const { error } = await supabase
                 .from("profiles")
                 .delete()
-                .eq("id", deleteId);
+                .eq("id_profiles", deleteId);
 
             if (error) {
                 console.error("Error deleting data:", error.message);
@@ -68,8 +68,8 @@ function Profiles() {
         }
     };
 
-    const handleShowDeleteModal = (id) => {
-        setDeleteId(id);
+    const handleShowDeleteModal = (id_profiles) => {
+        setDeleteId(id_profiles);
         setShowDeleteModal(true);
         setComplete(false);
     };
@@ -79,8 +79,8 @@ function Profiles() {
         setDeleteId(null);
     };
 
-    const handleEdit = (id) => {
-        navigate(`/admin/profiles/edit/${id}`);
+    const handleEdit = (id_profiles) => {
+        navigate(`/admin/profiles/edit/${id_profiles}`);
     };
 
     return (
@@ -171,7 +171,7 @@ function Profiles() {
                                             </thead>
                                             <tbody>
                                                 {profiles.map((item) => (
-                                                    <tr key={item.id}>
+                                                    <tr key={item.id_profiles}>
                                                         <td
                                                             style={{
                                                                 verticalAlign:
@@ -180,7 +180,7 @@ function Profiles() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.id}
+                                                            {item.id_profiles}
                                                         </td>
                                                         <td
                                                             style={{
@@ -261,7 +261,7 @@ function Profiles() {
                                                                     className="btn btn-danger btn-sm"
                                                                     onClick={() =>
                                                                         handleShowDeleteModal(
-                                                                            item.id
+                                                                            item.id_profiles
                                                                         )
                                                                     }
                                                                 >
@@ -276,7 +276,7 @@ function Profiles() {
                                                                     className="btn btn-primary btn-sm"
                                                                     onClick={() =>
                                                                         handleEdit(
-                                                                            item.id
+                                                                            item.id_profiles
                                                                         )
                                                                     }
                                                                 >

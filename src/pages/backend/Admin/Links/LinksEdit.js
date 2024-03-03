@@ -7,7 +7,7 @@ import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
 import { Modal, Button, Spinner } from "react-bootstrap";
 
-function Links_Edit() {
+function LinksEdit() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [linksData, setLinksData] = useState({
@@ -25,7 +25,7 @@ function Links_Edit() {
                 const { data, error } = await supabase
                     .from("links")
                     .select()
-                    .eq("id", id)
+                    .eq("id_links", id)
                     .single();
 
                 if (error) {
@@ -75,7 +75,7 @@ function Links_Edit() {
                     url: linksData.url,
                     image: linksData.image,
                 })
-                .eq("id", id);
+                .eq("id_links", id);
 
             if (error) {
                 console.error("Error updating profile data:", error.message);
@@ -229,4 +229,4 @@ function Links_Edit() {
     );
 }
 
-export default Links_Edit;
+export default LinksEdit;

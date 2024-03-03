@@ -29,7 +29,7 @@ function Links() {
         const { data, error } = await supabase
             .from("links")
             .select()
-            .order("id", { ascending: true, nullsFirst: true });
+            .order("id_links", { ascending: true, nullsFirst: true });
 
         if (error) {
             console.error("Error fetching data:", error.message);
@@ -50,7 +50,7 @@ function Links() {
             const { error } = await supabase
                 .from("links")
                 .delete()
-                .eq("id", deleteId);
+                .eq("id_links", deleteId);
 
             if (error) {
                 console.error("Error deleting data:", error.message);
@@ -80,8 +80,8 @@ function Links() {
         setDeleteId(null);
     };
 
-    const handleEdit = (id) => {
-        navigate(`/admin/links/edit/${id}`);
+    const handleEdit = (id_links) => {
+        navigate(`/admin/links/edit/${id_links}`);
     };
 
     return (
@@ -171,7 +171,7 @@ function Links() {
                                             </thead>
                                             <tbody>
                                                 {links.map((item) => (
-                                                    <tr key={item.id}>
+                                                    <tr key={item.id_links}>
                                                         <td
                                                             style={{
                                                                 verticalAlign:
@@ -180,7 +180,7 @@ function Links() {
                                                                     "center",
                                                             }}
                                                         >
-                                                            {item.id}
+                                                            {item.id_links}
                                                         </td>
                                                         <td
                                                             style={{
@@ -261,7 +261,7 @@ function Links() {
                                                                     className="btn btn-danger btn-sm"
                                                                     onClick={() =>
                                                                         handleShowDeleteModal(
-                                                                            item.id
+                                                                            item.id_links
                                                                         )
                                                                     }
                                                                 >
@@ -276,7 +276,7 @@ function Links() {
                                                                     className="btn btn-primary btn-sm"
                                                                     onClick={() =>
                                                                         handleEdit(
-                                                                            item.id
+                                                                            item.id_links
                                                                         )
                                                                     }
                                                                 >

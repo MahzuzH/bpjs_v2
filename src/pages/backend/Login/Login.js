@@ -22,7 +22,7 @@ function Login() {
             setLoading(true); // Set loading to true during login attempt
 
             const { data, error } = await supabase
-                .from("users")
+                .from("admins")
                 .select()
                 .eq("email", email)
                 .eq("password", password)

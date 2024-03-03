@@ -6,7 +6,7 @@ import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
 import { createClient } from "@supabase/supabase-js";
 
-function Links_Create() {
+function LinksCreate() {
     const [title, setTitle] = useState("");
     const [url, setUrl] = useState("");
     const [image, setImage] = useState("");
@@ -207,4 +207,4 @@ function Links_Create() {
     );
 }
 
-export default Links_Create;
+export default LinksCreate;

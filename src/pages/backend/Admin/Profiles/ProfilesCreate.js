@@ -6,7 +6,7 @@ import Navbar from "../../../../components/backend/Navbar";
 import Footer from "../../../../components/backend/Footer";
 import { createClient } from "@supabase/supabase-js";
 
-function Profiles_Create() {
+function ProfilesCreate() {
     const [title, setTitle] = useState("");
     const [subtitle, setSubtitle] = useState("");
     const [avatar, setAvatar] = useState("");
@@ -207,4 +207,4 @@ function Profiles_Create() {
     );
 }
 
-export default Profiles_Create;
+export default ProfilesCreate;

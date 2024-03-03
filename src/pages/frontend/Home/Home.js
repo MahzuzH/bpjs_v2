@@ -1,15 +1,14 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
+import React, { useState, useEffect } from "react";
 import { FiLogIn } from "react-icons/fi";
+import Modal from "../modal/modal";
+import "../Home/Home.css";
+import { useNavigate } from "react-router-dom";
+import { createClient } from "@supabase/supabase-js";
 import XIcon from "../icon/XIcon";
 import LinkedinIcon from "../icon/LinkdeinIcon";
 import InstagramIcon from "../icon/InstagramIcon";
 import TiktokIcon from "../icon/TiktokIcon";
 import FacebookIcon from "../icon/FacebookIcon";
-import Modal from "../modal/modal";
-import "../Home/Home.css";
-import { useNavigate } from "react-router-dom";
 
 function Home() {
     const [modalOn, setModalOn] = useState(false);
@@ -18,13 +17,11 @@ function Home() {
     const [links, setLinks] = useState([]);
     const [profiles, setProfiles] = useState([]);
     const [socials, setSocials] = useState([]);
-
+    const navigate = useNavigate();
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
         process.env.REACT_APP_SUPABASE_PROJ_KEY
     );
-
-    const navigate = useNavigate();
 
     const openModal = () => {
         setModalOn(true);
@@ -34,18 +31,37 @@ function Home() {
         setModalOn(false);
     };
 
-    const handleLinkClick = (link) => {
-        link.isModal ? openModal() : window.open(link.url, "_blank");
-    };
-
-    const fetchData = async (tableName, setDataFunction) => {
+    const fetchDataForTables = async () => {
         setLoading(true);
         try {
-            const data = await supabase.from(tableName).select().order("id");
-            setDataFunction(data.data);
+            const { data: profileData, error: profileError } = await supabase
+                .from("profiles")
+                .select("*");
+            if (profileError) {
+                throw profileError;
+            }
+
+            const { data: linkData, error: linkError } = await supabase
+                .from("links")
+                .select("*")
+                .order("id_links");
+            if (linkError) {
+                throw linkError;
+            }
+
+            const { data: socialsData, error: socialsError } = await supabase
+                .from("socials")
+                .select("*");
+            if (socialsError) {
+                throw socialsError;
+            }
+
+            setProfiles(profileData);
+            setLinks(linkData);
+            setSocials(socialsData);
             setLoading(false);
-        } catch (e) {
-            console.error(e);
+        } catch (error) {
+            console.error(error);
             setLoading(false);
         }
     };
@@ -55,15 +71,8 @@ function Home() {
             setCurrentYear(new Date().getFullYear());
         }, 1000);
 
-        const fetchDataForTables = async () => {
-            await Promise.all([
-                fetchData("profiles", setProfiles),
-                fetchData("links", setLinks),
-                fetchData("socials", setSocials),
-            ]);
-        };
-
         fetchDataForTables();
+
         return () => {
             clearInterval(intervalId);
         };
@@ -71,6 +80,10 @@ function Home() {
 
     const handleLogin = () => {
         navigate("/login");
+    };
+
+    const handleLinkClick = (url, isModal) => {
+        isModal ? openModal() : window.open(url, "_blank");
     };
 
     return (
@@ -86,52 +99,52 @@ function Home() {
                         }}
                     />
                 </button>
-                {profiles &&
-                    profiles.map((profile) => (
-                        <div
-                            key={profile.id}
-                            className="flex flex-col items-center justify-center"
-                        >
-                            <img
-                                src={profile.avatar}
-                                className="mb-4 mt-16"
-                                alt="logo"
-                                width={96}
-                                height={96}
-                            />
-                            <h1 className="font-bold mt-4 text-base text-black font-poppins md:text-lg lg:text-xl">
-                                {profile.title}
-                            </h1>
-                            <h2 className="px-8 mb-8 text-sm text-black font-monstserrat font-semibold md:text-base lg:text-lg">
-                                {profile.subtitle}
-                            </h2>
-                        </div>
-                    ))}
+                {profiles.map((profile) => (
+                    <div
+                        key={profile.id_profiles}
+                        className="flex flex-col items-center justify-center"
+                    >
+                        <img
+                            src={profile.avatar}
+                            className="mb-4 mt-16"
+                            alt="logo"
+                            width={96}
+                            height={96}
+                        />
+                        <h1 className="font-bold mt-4 text-base text-black font-poppins md:text-lg lg:text-xl">
+                            {profile.title}
+                        </h1>
+                        <h2 className="px-8 mb-8 text-sm text-black font-monstserrat font-semibold md:text-base lg:text-lg">
+                            {profile.subtitle}
+                        </h2>
+                    </div>
+                ))}
                 {loading ? (
-                    <p>Please wait while link ready...</p>
+                    <p>Please wait while links ready...</p>
                 ) : (
                     <ul className="flex flex-col w-full lg:w-4/5">
-                        {links &&
-                            links.map((link) => (
-                                <li
-                                    key={link.id}
-                                    className="cursor-pointer rounded-xl m-2 p-1 hover:scale-105 transition-all bg-gray-100 border-blue-900 border-4"
+                        {links.map((link) => (
+                            <li
+                                key={link.id_links}
+                                className="cursor-pointer rounded-xl m-2 p-1 hover:scale-105 transition-all bg-gray-100 border-blue-900 border-4"
+                            >
+                                <div
+                                    className="flex items-center"
+                                    onClick={() =>
+                                        handleLinkClick(link.url, link.isModal)
+                                    }
                                 >
-                                    <div
-                                        className="flex items-center"
-                                        onClick={() => handleLinkClick(link)}
-                                    >
-                                        <img
-                                            className="rounded-lg w-12 md:w-16 lg:w-18"
-                                            alt={link.title}
-                                            src={link.image}
-                                        />
-                                        <p className="flex justify-center items-center w-full font-poppins text-sm tracking-tighter -ml-1 text-black md:text-lg md:-ml-10 md:tracking-normal lg:text-xl">
-                                            {link.title}
-                                        </p>
-                                    </div>
-                                </li>
-                            ))}
+                                    <img
+                                        className="rounded-lg w-12 md:w-16 lg:w-18"
+                                        alt={link.title}
+                                        src={link.image}
+                                    />
+                                    <p className="flex justify-center items-center w-full font-poppins text-sm tracking-tighter -ml-1 text-black md:text-lg md:-ml-10 md:tracking-normal lg:text-xl">
+                                        {link.title}
+                                    </p>
+                                </div>
+                            </li>
+                        ))}
                     </ul>
                 )}
                 {modalOn && <Modal setModalOn={closeModal} />}
@@ -139,7 +152,7 @@ function Home() {
                     {socials &&
                         socials.map((social) => (
                             <a
-                                key={social.id}
+                                key={social.id_socials}
                                 href={social.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
