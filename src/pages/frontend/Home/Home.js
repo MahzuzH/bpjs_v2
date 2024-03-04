@@ -14,9 +14,10 @@ function Home() {
     const [modalOn, setModalOn] = useState(false);
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [loading, setLoading] = useState(false);
-    const [links, setLinks] = useState([]);
-    const [profiles, setProfiles] = useState([]);
-    const [socials, setSocials] = useState([]);
+    const [linktreeData, setlinktreeData] = useState([]);
+    const [linksData, setLinksData] = useState([]);
+    const [socialsData, setSocialsData] = useState([]);
+    const [profileData, setProfileData] = useState({});
     const navigate = useNavigate();
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
@@ -34,31 +35,50 @@ function Home() {
     const fetchDataForTables = async () => {
         setLoading(true);
         try {
+            const { data: linktreeData, error: linktreeError } = await supabase
+                .from("linktree")
+                .select("*");
+            if (linktreeError) {
+                throw linktreeError;
+            }
+
+            const profileIds = linktreeData.map(
+                (linktreeData) => linktreeData.id_profiles
+            );
             const { data: profileData, error: profileError } = await supabase
                 .from("profiles")
-                .select("*");
-            if (profileError) {
-                throw profileError;
-            }
+                .select("*")
+                .in("id_profiles", profileIds)
+                .single();
 
-            const { data: linkData, error: linkError } = await supabase
+            const linksIds = linktreeData.map(
+                (linktreeData) => linktreeData.id_links
+            );
+            const { data: linksData, error: linksError } = await supabase
                 .from("links")
                 .select("*")
-                .order("id_links");
-            if (linkError) {
-                throw linkError;
-            }
+                .in("id_links", linksIds);
 
+            const socialsIds = linktreeData.map(
+                (linktreeData) => linktreeData.id_socials
+            );
             const { data: socialsData, error: socialsError } = await supabase
                 .from("socials")
-                .select("*");
+                .select("*")
+                .in("id_socials", socialsIds);
             if (socialsError) {
                 throw socialsError;
             }
 
-            setProfiles(profileData);
-            setLinks(linkData);
-            setSocials(socialsData);
+            console.log("Linktree Data:", linktreeData);
+            console.log("Links Data:", linksData);
+            console.log("Profile Data:", profileData);
+            console.log("Socials Data:", socialsData);
+
+            setlinktreeData(linktreeData);
+            setLinksData(linksData);
+            setSocialsData(socialsData);
+            setProfileData(profileData);
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -99,31 +119,28 @@ function Home() {
                         }}
                     />
                 </button>
-                {profiles.map((profile) => (
-                    <div
-                        key={profile.id_profiles}
-                        className="flex flex-col items-center justify-center"
-                    >
+                {Object.keys(profileData).length > 0 && (
+                    <div className="flex flex-col items-center justify-center">
                         <img
-                            src={profile.avatar}
+                            src={profileData.avatar}
                             className="mb-4 mt-16"
                             alt="logo"
                             width={96}
                             height={96}
                         />
                         <h1 className="font-bold mt-4 text-base text-black font-poppins md:text-lg lg:text-xl">
-                            {profile.title}
+                            {profileData.title}
                         </h1>
                         <h2 className="px-8 mb-8 text-sm text-black font-monstserrat font-semibold md:text-base lg:text-lg">
-                            {profile.subtitle}
+                            {profileData.subtitle}
                         </h2>
                     </div>
-                ))}
+                )}
                 {loading ? (
                     <p>Please wait while links ready...</p>
                 ) : (
                     <ul className="flex flex-col w-full lg:w-4/5">
-                        {links.map((link) => (
+                        {linksData.map((link) => (
                             <li
                                 key={link.id_links}
                                 className="cursor-pointer rounded-xl m-2 p-1 hover:scale-105 transition-all bg-gray-100 border-blue-900 border-4"
@@ -149,8 +166,8 @@ function Home() {
                 )}
                 {modalOn && <Modal setModalOn={closeModal} />}
                 <div className="flex items-center mt-8 gap-2 md:text-sm">
-                    {socials &&
-                        socials.map((social) => (
+                    {socialsData &&
+                        socialsData.map((social) => (
                             <a
                                 key={social.id_socials}
                                 href={social.url}
