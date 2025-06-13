@@ -43,7 +43,7 @@ function Home() {
 
             if (linktreeError) throw linktreeError;
 
-            // Ambil profile
+            // Ambil profil
             const { data: profile, error: profileError } = await supabase
                 .from("profiles")
                 .select("*")
