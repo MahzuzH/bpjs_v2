@@ -55,7 +55,8 @@ function Home() {
             const { data: links, error: linksError } = await supabase
                 .from("links")
                 .select("*")
-                .eq("id_linktree", linktreeRows.id_linktree);
+                .eq("id_linktree", linktreeRows.id_linktree)
+                .order("id_links", { ascending: true });
 
             if (linksError) throw linksError;
 
