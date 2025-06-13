@@ -35,53 +35,45 @@ function Home() {
     const fetchDataForTables = async () => {
         setLoading(true);
         try {
-            const { data: linktreeData, error: linktreeError } = await supabase
+            const { data: linktreeRows, error: linktreeError } = await supabase
                 .from("linktree")
-                .select("*");
-            if (linktreeError) {
-                throw linktreeError;
-            }
-
-            const profileIds = linktreeData.map(
-                (linktreeData) => linktreeData.id_profiles
-            );
-            const { data: profileData, error: profileError } = await supabase
-                .from("profiles")
                 .select("*")
-                .in("id_profiles", profileIds)
+                .limit(1)
                 .single();
 
-            const linksIds = linktreeData.map(
-                (linktreeData) => linktreeData.id_links
-            );
-            const { data: linksData, error: linksError } = await supabase
+            if (linktreeError) throw linktreeError;
+
+            // Ambil profile
+            const { data: profile, error: profileError } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id_profiles", linktreeRows.id_profiles)
+                .single();
+
+            if (profileError) throw profileError;
+
+            const { data: links, error: linksError } = await supabase
                 .from("links")
                 .select("*")
-                .in("id_links", linksIds);
+                .eq("id_linktree", linktreeRows.id_linktree);
 
-            const socialsIds = linktreeData.map(
-                (linktreeData) => linktreeData.id_socials
-            );
-            const { data: socialsData, error: socialsError } = await supabase
+            if (linksError) throw linksError;
+
+            // Ambil socials
+            const { data: socials, error: socialsError } = await supabase
                 .from("socials")
                 .select("*")
-                .in("id_socials", socialsIds);
-            if (socialsError) {
-                throw socialsError;
-            }
+                .eq("id_linktree", linktreeRows.id_linktree);
 
-            console.log("Linktree Data:", linktreeData);
-            console.log("Links Data:", linksData);
-            console.log("Profile Data:", profileData);
-            console.log("Socials Data:", socialsData);
+            if (socialsError) throw socialsError;
 
-            setlinktreeData(linktreeData);
-            setLinksData(linksData);
-            setSocialsData(socialsData);
-            setProfileData(profileData);
+            setlinktreeData(linktreeRows);
+            setProfileData(profile);
+            setLinksData(links);
+            setSocialsData(socials);
             setLoading(false);
         } catch (error) {
-            console.error(error);
+            console.error("Gagal mengambil data:", error);
             setLoading(false);
         }
     };

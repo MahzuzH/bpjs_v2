@@ -19,7 +19,7 @@ function Login() {
 
     const handleLogin = async () => {
         try {
-            setLoading(true); // Set loading to true during login attempt
+            setLoading(true);
 
             const { data, error } = await supabase
                 .from("admins")
@@ -36,10 +36,10 @@ function Login() {
             setUser(email);
             navigate("/admin");
         } catch (error) {
-            setError("Invalid email or password"); // Set error message
+            setError("Invalid email or password");
             console.error("Login failed:", error.message);
         } finally {
-            setLoading(false); // Set loading to false after login attempt
+            setLoading(false);
         }
     };
 
