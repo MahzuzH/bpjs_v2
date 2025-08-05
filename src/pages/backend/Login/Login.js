@@ -54,140 +54,109 @@ function Login() {
     };
 
     return (
-        <div
-            className="bg-gradient-primary d-flex align-items-center"
-            style={{ height: "100vh", overflow: "hidden" }}
-        >
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-xl-10 col-lg-12 col-md-9">
-                        <div
-                            className="card o-hidden border-0 shadow-lg my-5"
-                            style={{ height: "50vh" }}
-                        >
-                            <div className="card-body h-max align-items-lg-stretch p-0">
-                                <div className="row">
-                                    <div
-                                        className="col-lg-6 d-none d-lg-block bg-login-image rounded-xl py-60"
-                                        style={{
-                                            backgroundImage: `url('https://umsu.ac.id/artikel/wp-content/uploads/2023/09/penyakit-yang-tak-ditanggung-BPJS-kesehatan.jpg')`,
-                                            backgroundSize: "contain",
-                                        }}
-                                    ></div>
-                                    <div className="col-lg-6">
-                                        <div className="p-5">
-                                            <div className="text-center pt-16">
-                                                <h1 className="h4 text-gray-900 mb-4">
-                                                    Silahkan Login!
-                                                </h1>
-                                            </div>
-                                            {error && (
-                                                <div
-                                                    className="alert alert-danger"
-                                                    role="alert"
-                                                >
-                                                    {error}
-                                                </div>
-                                            )}
-                                            <form
-                                                className="email"
-                                                onSubmit={(e) => {
-                                                    e.preventDefault();
-                                                    handleLogin();
-                                                }}
-                                            >
-                                                <div className="form-group">
-                                                    <input
-                                                        type="email"
-                                                        className="form-control form-control-user"
-                                                        id="exampleInputEmail"
-                                                        aria-describedby="emailHelp"
-                                                        placeholder="Email"
-                                                        value={email}
-                                                        onChange={(e) =>
-                                                            setEmail(
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
-                                                <div className="form-group">
-                                                    <div className="input-group">
-                                                        <input
-                                                            type={
-                                                                showPassword
-                                                                    ? "text"
-                                                                    : "password"
-                                                            }
-                                                            className="form-control form-control-user"
-                                                            id="exampleInputPassword"
-                                                            placeholder="Password"
-                                                            value={password}
-                                                            onChange={(e) =>
-                                                                setPassword(
-                                                                    e.target
-                                                                        .value
-                                                                )
-                                                            }
-                                                            onKeyPress={
-                                                                handleKeyPress
-                                                            }
-                                                        />
-                                                        <div className="input-group-append">
-                                                            <button
-                                                                className="btn btn-outline-secondary"
-                                                                type="button"
-                                                                onClick={
-                                                                    toggleShowPassword
-                                                                }
-                                                            >
-                                                                {showPassword ? (
-                                                                    <FiEyeOff
-                                                                        size={
-                                                                            18
-                                                                        }
-                                                                    />
-                                                                ) : (
-                                                                    <FiEye
-                                                                        size={
-                                                                            18
-                                                                        }
-                                                                    />
-                                                                )}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    className="btn bg-primary font-semibold text-white btn-user btn-block h-12"
-                                                    onClick={handleLogin}
-                                                >
-                                                    {/* Display loading spinner if loading is true */}
-                                                    {loading ? (
-                                                        <span
-                                                            className="spinner-border spinner-border-sm"
-                                                            role="status"
-                                                            aria-hidden="true"
-                                                        ></span>
-                                                    ) : (
-                                                        "Login"
-                                                    )}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+            <h2 className="text-2xl font-semibold mb-6">Ganti Nomor HP</h2>
+            <form onSubmit={handleSubmit}>
+                {/* Step 1: Shipping Address */}
+                <div className="space-y-4 mb-6">
+                    <div className="text-lg font-medium">Data Pengguna</div>
+
+                    {/* NIK and No. JKN */}
+                    <div className="flex space-x-4">
+                        <div className="w-1/2">
+                            <label className="block text-sm font-medium text-gray-700">
+                                NIK *
+                            </label>
+                            <input
+                                type="text"
+                                name="nik"
+                                value={formData.nik}
+                                onChange={handleChange}
+                                required
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <label className="block text-sm font-medium text-gray-700">
+                                No. JKN *
+                            </label>
+                            <input
+                                type="text"
+                                name="no_jkn"
+                                value={formData.no_jkn}
+                                onChange={handleChange}
+                                required
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                            />
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <script src="vendor/jquery/jquery.min.js"></script>
-            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-            <script src="js/sb-admin-2.min.js"></script>
+                    {/* Nama and Segmen */}
+                    <div className="flex space-x-4">
+                        <div className="w-1/2">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Nama *
+                            </label>
+                            <input
+                                type="text"
+                                name="nama"
+                                value={formData.nama}
+                                onChange={handleChange}
+                                required
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Segmen *
+                            </label>
+                            <input
+                                type="text"
+                                name="segmen"
+                                value={formData.segmen}
+                                onChange={handleChange}
+                                required
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                            />
+                        </div>
+                    </div>
+
+                    {/* No HP */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Nomor HP Baru *
+                        </label>
+                        <input
+                            type="text"
+                            name="no_hp"
+                            value={formData.no_hp}
+                            onChange={handleChange}
+                            required
+                            className="w-full p-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
+                </div>
+
+                {/* Step 2: Review Your Info */}
+                <div className="flex justify-between mb-6">
+                    <span className="font-medium text-gray-700">
+                        Periksa kembali data Anda
+                    </span>
+                    <div className="text-sm text-gray-600">
+                        Segmen: {formData.segmen}
+                    </div>
+                </div>
+
+                {/* Step 3: Submit */}
+                <div className="flex justify-end">
+                    <button
+                        type="submit"
+                        className="bg-blue-600 text-white px-6 py-2 rounded-md"
+                    >
+                        Ganti Nomor HP
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }

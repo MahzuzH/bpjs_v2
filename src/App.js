@@ -12,6 +12,7 @@ import Socials from "./pages/backend/Admin/Socials/Socials";
 import SocialsCreate from "./pages/backend/Admin/Socials/SocialsCreate";
 import SocialsEdit from "./pages/backend/Admin/Socials/SocialsEdit";
 import Login from "./pages/backend/Login/Login";
+import FiturGantiHP from "./pages/frontend/FiturGantiHP/FiturGantiHP";
 
 const App = () => {
     return (
@@ -19,6 +20,9 @@ const App = () => {
             <Routes>
                 {/* Home */}
                 <Route path="/" element={<Home />} />
+
+                {/* Fitur Ganti HP */}
+                <Route path="/ubah-hp" element={<FiturGantiHP />} />
 
                 {/* Admin */}
                 <Route path="/admin" element={<Dashboard />} />
