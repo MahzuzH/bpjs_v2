@@ -80,6 +80,9 @@ function Home() {
     };
 
     useEffect(() => {
+        // Set the page title dynamically when this component is loaded
+        document.title = "BPJS Kesehatan Subang";
+
         const intervalId = setInterval(() => {
             setCurrentYear(new Date().getFullYear());
         }, 1000);
