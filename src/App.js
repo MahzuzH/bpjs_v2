@@ -11,6 +11,9 @@ import LinksEdit from "./pages/backend/Admin/Links/LinksEdit";
 import Socials from "./pages/backend/Admin/Socials/Socials";
 import SocialsCreate from "./pages/backend/Admin/Socials/SocialsCreate";
 import SocialsEdit from "./pages/backend/Admin/Socials/SocialsEdit";
+import MCS from "./pages/backend/Admin/MCS/MCS";
+import MCSCreate from "./pages/backend/Admin/MCS/MCSCreate";
+import MCSEdit from "./pages/backend/Admin/MCS/MCSEdit";
 import Login from "./pages/backend/Login/Login";
 import FiturGantiHP from "./pages/frontend/FiturGantiHP/FiturGantiHP";
 import MCSEvent from "./pages/frontend/FiturMCS/FiturMCS";
@@ -60,6 +63,11 @@ const App = () => {
                     path="/admin/socials/edit/:id"
                     element={<SocialsEdit />}
                 />
+
+                {/* Jadwal MCS */}
+                <Route path="/admin/mcs" element={<MCS />} />
+                <Route path="/admin/mcs/create" element={<MCSCreate />} />
+                <Route path="/admin/mcs/edit/:id" element={<MCSEdit />} />
             </Routes>
         </Router>
     );

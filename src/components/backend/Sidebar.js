@@ -52,6 +52,13 @@ const Sidebar = () => {
                     <span>Socials</span>
                 </Link>
             </li>
+
+            <li className={navItemClass("/admin/mcs")}>
+                <Link to={"/admin/mcs"} className="nav-link">
+                    <i className="fas fa-fw fa-calendar-alt"></i>
+                    <span>Jadwal MCS</span>
+                </Link>
+            </li>
         </ul>
     );
 };

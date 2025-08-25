@@ -8,6 +8,7 @@ const Dashboard = () => {
     const [profilesCount, setProfilesCount] = useState(0);
     const [linksCount, setLinksCount] = useState(0);
     const [socialsCount, setSocialsCount] = useState(0);
+    const [mcsCount, setMCSCount] = useState(0);
 
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
@@ -16,19 +17,26 @@ const Dashboard = () => {
 
     const fetchCounts = async () => {
         try {
-            const [profileData, linkData, socialData] = await Promise.all([
-                supabase
-                    .from("profiles")
-                    .select("id_profiles", { count: "exact" }),
-                supabase.from("links").select("id_links", { count: "exact" }),
-                supabase
-                    .from("socials")
-                    .select("id_socials", { count: "exact" }),
-            ]);
+            const [profileData, linkData, socialData, mcsData] =
+                await Promise.all([
+                    supabase
+                        .from("profiles")
+                        .select("id_profiles", { count: "exact" }),
+                    supabase
+                        .from("links")
+                        .select("id_links", { count: "exact" }),
+                    supabase
+                        .from("socials")
+                        .select("id_socials", { count: "exact" }),
+                    supabase
+                        .from("mcs_events")
+                        .select("id_jadwalmcs", { count: "exact" }),
+                ]);
 
             setProfilesCount(profileData.data.length);
             setLinksCount(linkData.data.length);
             setSocialsCount(socialData.data.length);
+            setMCSCount(mcsData.data.length);
         } catch (error) {
             console.error("Error fetching counts:", error.message);
         }
@@ -102,6 +110,26 @@ const Dashboard = () => {
                                                 </div>
                                                 <div className="col-auto">
                                                     <i className="fas fa-fw fa-rss fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-xl-3 col-md-6 mb-4">
+                                    <div className="card border-left-info shadow h-100 py-2">
+                                        <div className="card-body">
+                                            <div className="row no-gutters align-items-center">
+                                                <div className="col mr-2">
+                                                    <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                        Jadwal MCS
+                                                    </div>
+                                                    <div className="h5 mb-0 font-weight-bold text-gray-800">
+                                                        {mcsCount}
+                                                    </div>
+                                                </div>
+                                                <div className="col-auto">
+                                                    <i className="fas fa-fw fa-calendar-alt fa-2x text-gray-300"></i>
                                                 </div>
                                             </div>
                                         </div>

@@ -136,7 +136,7 @@ const MCSCalendar = ({
                 const { data, error } = await supabase
                     .from(tableName)
                     .select(
-                        "id_jadwalmcs, event_date, title, start_time, end_time, location"
+                        "id_jadwalmcs_int, event_date, title, start_time, end_time, location"
                     )
                     .gte("event_date", startISO)
                     .lte("event_date", endISO)
@@ -146,7 +146,7 @@ const MCSCalendar = ({
                 if (error) throw error;
 
                 const mapped = (data || []).map((row) => ({
-                    id: row.id_jadwalmcs,
+                    id: row.id_jadwalmcs_int,
                     date: row.event_date,
                     title: row.title || "Layanan MCS",
                     startTime: row.start_time?.slice(0, 5) || "",
