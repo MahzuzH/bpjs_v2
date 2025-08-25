@@ -13,6 +13,7 @@ import SocialsCreate from "./pages/backend/Admin/Socials/SocialsCreate";
 import SocialsEdit from "./pages/backend/Admin/Socials/SocialsEdit";
 import Login from "./pages/backend/Login/Login";
 import FiturGantiHP from "./pages/frontend/FiturGantiHP/FiturGantiHP";
+import MCSEvent from "./pages/frontend/FiturMCS/FiturMCS";
 
 const App = () => {
     return (
@@ -23,6 +24,9 @@ const App = () => {
 
                 {/* Fitur Ganti HP */}
                 <Route path="/ubah-hp" element={<FiturGantiHP />} />
+
+                {/* Fitur MCS */}
+                <Route path="/mcs" element={<MCSEvent />} />
 
                 {/* Admin */}
                 <Route path="/admin" element={<Dashboard />} />

@@ -8,7 +8,6 @@ const Dashboard = () => {
     const [profilesCount, setProfilesCount] = useState(0);
     const [linksCount, setLinksCount] = useState(0);
     const [socialsCount, setSocialsCount] = useState(0);
-    const [pendingRequests, setPendingRequests] = useState([]); // For holding pending No. HP change requests
 
     const supabase = createClient(
         process.env.REACT_APP_SUPABASE_PROJ_URL,
@@ -35,52 +34,10 @@ const Dashboard = () => {
         }
     };
 
-    // Fetch pending requests
-    const fetchPendingRequests = async () => {
-        const { data, error } = await supabase
-            .from("hp_change_requests")
-            .select()
-            .eq("status", "pending"); // Only fetch pending requests
-
-        if (error) {
-            console.error("Error fetching pending requests:", error.message);
-        } else {
-            setPendingRequests(data); // Set pending requests data
-        }
-    };
-
     useEffect(() => {
         fetchCounts();
-        fetchPendingRequests(); // Fetch pending requests on page load
         document.title = "Admin | Dashboard";
     }, []);
-
-    // Function to handle approval or rejection of the request
-    const handleRequestUpdate = async (requestId, action) => {
-        const status = action === "approve" ? "confirmed" : "rejected"; // Update status based on action
-        const { error } = await supabase
-            .from("hp_change_requests")
-            .update({ status })
-            .eq("id", requestId); // Update the request status
-
-        if (error) {
-            console.error("Error updating request status:", error.message);
-        } else {
-            // If approved, update the user's No. HP in the users table
-            if (status === "confirmed") {
-                const request = pendingRequests.find((r) => r.id === requestId);
-                await supabase
-                    .from("users")
-                    .update({ no_hp: request.new_no_hp })
-                    .eq("nik", request.nik); // Update the user's No. HP
-
-                alert("No. HP successfully updated!");
-            }
-
-            // Refresh pending requests
-            fetchPendingRequests();
-        }
-    };
 
     return (
         <div>
@@ -149,82 +106,6 @@ const Dashboard = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            {/* Display Pending Requests */}
-                            <div className="row">
-                                <div className="col-12">
-                                    <h3 className="text-center mb-4">
-                                        Pending No. HP Change Requests
-                                    </h3>
-                                    {pendingRequests.length === 0 ? (
-                                        <p className="text-center">
-                                            No pending requests.
-                                        </p>
-                                    ) : (
-                                        <div className="table-responsive">
-                                            <table className="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>NIK</th>
-                                                        <th>Old No. HP</th>
-                                                        <th>New No. HP</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {pendingRequests.map(
-                                                        (request) => (
-                                                            <tr
-                                                                key={request.id}
-                                                            >
-                                                                <td>
-                                                                    {
-                                                                        request.nik
-                                                                    }
-                                                                </td>
-                                                                <td>
-                                                                    {
-                                                                        request.old_no_hp
-                                                                    }
-                                                                </td>
-                                                                <td>
-                                                                    {
-                                                                        request.new_no_hp
-                                                                    }
-                                                                </td>
-                                                                <td>
-                                                                    <button
-                                                                        className="btn btn-success"
-                                                                        onClick={() =>
-                                                                            handleRequestUpdate(
-                                                                                request.id,
-                                                                                "approve"
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Approve
-                                                                    </button>
-                                                                    <button
-                                                                        className="btn btn-danger ml-2"
-                                                                        onClick={() =>
-                                                                            handleRequestUpdate(
-                                                                                request.id,
-                                                                                "reject"
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        Reject
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
